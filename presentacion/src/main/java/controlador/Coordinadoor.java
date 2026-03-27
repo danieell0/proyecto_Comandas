@@ -56,5 +56,14 @@ public class Coordinadoor {
     public List<ClienteDTO> obtenerClientes() throws NegocioExcepcion {
         return clienteBO.obtenerClientes();
     }
+    
+     public List<ClienteDTO> buscarProductos(String filtro) {
+        try {
+            return clienteBO.consultarPorFiltro(filtro);
+        } catch (NegocioExcepcion e) {
+            JOptionPane.showMessageDialog(null, "Error en la búsqueda: " + e.getMessage());
+            return null;
+        }
+    }
 
 }

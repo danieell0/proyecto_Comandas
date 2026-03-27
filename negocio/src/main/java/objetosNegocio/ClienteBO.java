@@ -83,6 +83,16 @@ public class ClienteBO implements IClienteFrecuenteBO {
             throw new NegocioExcepcion("Error al obtener el clientes");
         }
     }
+    public List<ClienteDTO> consultarPorFiltro(String filtro) throws NegocioExcepcion {
+        try {
+            String busqueda = (filtro == null) ? "" : filtro.trim();
+            List<ClienteFrecuente> entidades = clienteDAO.consultarPorFiltro(busqueda);
+            return ClienteAdapter.listaEntidadADTO(entidades);
+        } catch (PersistenciaException e) {
+            throw new NegocioExcepcion("Hubo un error en la busqueda.", e);
+        }
+    }
+
 
     public void validadrDatos(ClienteDTO cliente) throws NegocioExcepcion {
         if (cliente == null) {

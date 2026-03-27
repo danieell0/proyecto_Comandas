@@ -11,13 +11,18 @@ import Componentes.panelSuperior;
 import Componentes.tablaClientes;
 import controlador.Coordinadoor;
 import dto.ClienteDTO;
+import entidades.Cliente;
+import entidades.ClienteFrecuente;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,8 +34,8 @@ import javax.swing.JSplitPane;
  */
 public class ClienteFrecuenteFrame extends JFrame {
 
-    private boolean menuVisible = false;
-
+    private boolean menuVisible = false;    
+    
     public ClienteFrecuenteFrame(Sidebar sliede, formClienteFrecuente form, panelSuperior pa, tablaClientes tabla, barraBusqueda barrab) {
         //tamaño del menu 
         sliede.setPreferredSize(new Dimension(0, 0));
@@ -120,7 +125,39 @@ public class ClienteFrecuenteFrame extends JFrame {
                 }
             }
         });
+        
+        barrab.getTxtBuscar().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                accionBuscar();
+            }
 
+            private void accionBuscar() {
+                String texto = barrab.getTxtBuscar().getText();
+                List<ClienteDTO> filtrados = Coordinadoor.getCoordinador().buscarProductos(texto);
+                actualizarTabla(filtrados);
+            }
+
+            private void actualizarTabla(List<ClienteDTO> lista) {
+                tabla.getModelo().setRowCount(0); // Limpiar filas existentes
+                if (lista != null) {
+                    for (ClienteDTO c : lista) {
+                        Object[] fila = {
+                            c.getId(),
+                            c.getNombre(),
+                            c.getApellidoPaterno(),
+                            c.getApellidoMaterno(),
+                            c.getCorreoElectronico(),
+                            c.getTelefono(),
+                            c.getNumeroVisitas(),
+                            c.getPuntosFidelidad()
+                        };
+                        tabla.getModelo().addRow(fila);
+                    }
+                }
+            }
+
+        });
         tabla.getTabla().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

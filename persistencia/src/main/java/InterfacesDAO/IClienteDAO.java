@@ -23,4 +23,6 @@ public interface IClienteDAO {
     
     public ClienteFrecuente editar(ClienteFrecuente Cliente) throws PersistenciaException;
     
+    public List<ClienteFrecuente> consultarPorFiltro(String filtro) throws PersistenciaException;
+
 }

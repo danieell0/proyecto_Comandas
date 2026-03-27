@@ -5,6 +5,7 @@
 package adaptadores;
 
 import dto.ClienteDTO;
+import entidades.Cliente;
 import entidades.ClienteFrecuente;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,5 +51,12 @@ public class ClienteAdapter {
             lista.add(entidadADTO(c));
         }
         return lista;
+    }
+    public static List<ClienteDTO> listaEntidadDTO(List<ClienteFrecuente> clientes) {
+        List<ClienteDTO> dtos = new ArrayList<>();
+        for (ClienteFrecuente p : clientes) {
+            dtos.add(entidadADTO(p));
+        }
+        return dtos;
     }
 }
