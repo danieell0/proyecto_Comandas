@@ -4,19 +4,44 @@
  */
 package DAO;
 
+import InterfacesDAO.IClienteDAO;
+import com.mysql.cj.QueryReturnType;
 import conexion.ConexionBD;
 import entidades.Cliente;
 import entidades.ClienteFrecuente;
+import excepciones.PersistenciaException;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 
 /**
  *
  * @author munos
  */
-public class ClienteDAO {
-    
-    public ClienteFrecuente guardar(ClienteFrecuente cliente) {
+public class ClienteDAO implements IClienteDAO {
+
+    @Override
+    public ClienteFrecuente editar(ClienteFrecuente cliente) throws PersistenciaException{
+        EntityManager em = ConexionBD.crearConexion();
+
+        try {
+            em.getTransaction().begin();
+            ClienteFrecuente actualizado = em.merge(cliente);
+            em.getTransaction().commit();
+            return actualizado;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al editar el cliente");
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Cliente guardarCliente(Cliente cliente) throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();
         try {
             em.getTransaction().begin();
@@ -27,15 +52,17 @@ public class ClienteDAO {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            throw new PersistenceException("error al guardar");
+            throw new PersistenciaException("error al guardar");
         } finally {
             em.close();
         }
     }
-    public boolean eliminar(Long id) {
+
+    @Override
+    public boolean eliminarCliente(int idCliente) throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();
         try {
-            ClienteFrecuente cliente = em.find(ClienteFrecuente.class, id);
+            ClienteFrecuente cliente = em.find(ClienteFrecuente.class, idCliente);
             if (cliente == null) {
                 return false;
             }
@@ -52,21 +79,19 @@ public class ClienteDAO {
             em.close();
         }
     }
-     public ClienteFrecuente editar(ClienteFrecuente cliente) {
-        EntityManager em = ConexionBD.crearConexion();
 
+    @Override
+    public List<ClienteFrecuente> obtenerClientes() throws PersistenciaException {
+        EntityManager em=ConexionBD.crearConexion();
         try {
-            em.getTransaction().begin();
-            ClienteFrecuente actualizado = em.merge(cliente);
-            em.getTransaction().commit();
-            return actualizado;
+            String comandoJPQL="SELECT p FROM ClienteFrecuente P";
+            TypedQuery<ClienteFrecuente> query=em.createQuery(comandoJPQL,ClienteFrecuente.class);
+            return query.getResultList();
         } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
-        } finally {
+            throw new PersistenciaException("Error al obtener la lista de clientes frecuentes");
+        }finally{
             em.close();
         }
     }
-     }
+
+}
