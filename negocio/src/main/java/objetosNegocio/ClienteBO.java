@@ -91,7 +91,7 @@ public class ClienteBO implements IClienteFrecuenteBO {
         if (!ValidadoresClientes.nombre(cliente.getNombre())) {
             throw new NegocioExcepcion("Nombre inválido");
         }
-        if (ValidadoresClientes.apellidoPaterno(cliente.getApellidoPaterno())) {
+        if (!ValidadoresClientes.apellidoPaterno(cliente.getApellidoPaterno())) {
             throw new NegocioExcepcion("Apellido paterno invalido");
         }
         if (!ValidadoresClientes.apellidoMaterno(cliente.getApellidoMaterno())) {

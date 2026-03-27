@@ -5,37 +5,56 @@
 package controlador;
 
 import DAO.ClienteDAO;
+import dto.ClienteDTO;
 import entidades.ClienteFrecuente;
+import excepciones.NegocioExcepcion;
 import excepciones.PersistenciaException;
 import java.util.List;
+import javax.swing.JOptionPane;
+import objetosNegocio.ClienteBO;
+import pantallas.ClienteFrecuenteFrame;
 
 /**
  *
  * @author munos
  */
 public class Coordinadoor {
-    private static Coordinadoor coordinador;
 
+    private static Coordinadoor cordinador;
 
-    private ClienteDAO clienteDAO;
+    private ClienteBO clienteBO;
+    
+    private ClienteFrecuenteFrame frameCliente;
 
     private Coordinadoor() {
-        clienteDAO = new ClienteDAO(); 
+        clienteBO = new ClienteBO();
     }
 
     public static Coordinadoor getCoordinador() {
-        if (coordinador == null) {
-            coordinador = new Coordinadoor();
+        if (cordinador == null) {
+            cordinador = new Coordinadoor();
         }
-        return coordinador;
+        return cordinador;
     }
 
+    public void guardarCliente(ClienteDTO cliente) {
 
-    public List<ClienteFrecuente> obtenerClientes() throws PersistenciaException {
-        return clienteDAO.obtenerClientes();
+        try {
+            if (cliente.getId() == null) {
+                clienteBO.registrar(cliente);
+                JOptionPane.showMessageDialog(null, "Cliente registrado ");
+            } else {
+                clienteBO.editar(cliente);
+                JOptionPane.showMessageDialog(null, "Cliente actualizado ");
+            }
+
+        } catch (NegocioExcepcion e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
-    public ClienteFrecuente editarCliente(ClienteFrecuente cliente) throws PersistenciaException {
-        return clienteDAO.editar(cliente);
+    public List<ClienteDTO> obtenerClientes() throws NegocioExcepcion {
+        return clienteBO.obtenerClientes();
     }
+
 }

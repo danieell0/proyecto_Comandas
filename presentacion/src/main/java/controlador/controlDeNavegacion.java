@@ -10,7 +10,7 @@ import Componentes.formClienteFrecuente;
 import Componentes.panelSuperior;
 import Componentes.tablaClientes;
 import javax.swing.JFrame;
-import pantallas.frameBase;
+import pantallas.ClienteFrecuenteFrame;
 
 /**
  *
@@ -34,7 +34,7 @@ public class controlDeNavegacion {
         panelSuperior pa=new panelSuperior("Clientes Frecuentes");
         tablaClientes tabla=new tablaClientes();
         barraBusqueda barrab=new barraBusqueda();
-        cambiarPantalla(new frameBase(sliede,form,pa,tabla,barrab));
+        cambiarPantalla(new ClienteFrecuenteFrame(sliede,form,pa,tabla,barrab));
     }
 
     public void cambiarPantalla(JFrame nuevoFrame) {

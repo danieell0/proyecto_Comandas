@@ -9,6 +9,8 @@ import Componentes.barraBusqueda;
 import Componentes.formClienteFrecuente;
 import Componentes.panelSuperior;
 import Componentes.tablaClientes;
+import controlador.Coordinadoor;
+import dto.ClienteDTO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,11 +27,11 @@ import javax.swing.JSplitPane;
  *
  * @author Jorge
  */
-public class frameBase extends JFrame {
+public class ClienteFrecuenteFrame extends JFrame {
 
     private boolean menuVisible = false;
 
-    public frameBase(Sidebar sliede, formClienteFrecuente form, panelSuperior pa, tablaClientes tabla, barraBusqueda barrab) {
+    public ClienteFrecuenteFrame(Sidebar sliede, formClienteFrecuente form, panelSuperior pa, tablaClientes tabla, barraBusqueda barrab) {
         //tamaño del menu 
         sliede.setPreferredSize(new Dimension(0, 0));
 
@@ -80,23 +82,6 @@ public class frameBase extends JFrame {
 
             sliede.revalidate();
             sliede.repaint();
-        });
-
-        //el action listener del boton de guardar 
-        form.getBtnGuardar().addActionListener(e -> {
-            tabla.getModelo().addRow(new Object[]{
-                form.getTxtNombres().getText(),
-                form.getTxtApellidoPaterno().getText(),
-                form.getTxtApellidoMatero().getText(),
-                form.getTxtTelefono().getText(),
-                form.getTxtTelefono().getText(),
-                0, 0, "Eliminar"
-            });
-            form.getTxtNombres().setText("");
-            form.getTxtApellidoPaterno().setText("");
-            form.getTxtApellidoMatero().setText("");
-            form.getTxtTelefono().setText("");
-            form.getTxtCorreo().setText("");
         });
 
         //action listener de la tabla
@@ -152,6 +137,40 @@ public class frameBase extends JFrame {
                         tabla.getModelo().removeRow(fila);
                     }
                 }
+            }
+        });
+        
+        //el action listener del boton de guardar 
+        form.getBtnGuardar().addActionListener(e -> {
+            tabla.getModelo().addRow(new Object[]{
+                form.getTxtNombres().getText(),
+                form.getTxtApellidoPaterno().getText(),
+                form.getTxtApellidoMatero().getText(),
+                form.getTxtTelefono().getText(),
+                form.getTxtTelefono().getText(),
+                0, 0, "Eliminar"
+            });
+            form.getTxtNombres().setText("");
+            form.getTxtApellidoPaterno().setText("");
+            form.getTxtApellidoMatero().setText("");
+            form.getTxtTelefono().setText("");
+            form.getTxtCorreo().setText("");
+        });
+
+        
+        form.getBtnGuardar().addActionListener(e -> {
+            try {
+                ClienteDTO cliente = new ClienteDTO();
+                cliente.setNombre(form.getTxtNombres().getText());
+                cliente.setApellidoPaterno(form.getTxtApellidoPaterno().getText());
+                cliente.setApellidoMaterno(form.getTxtApellidoMatero().getText());
+                cliente.setTelefono(form.getTxtTelefono().getText());
+                cliente.setCorreoElectronico(form.getTxtCorreo().getText());
+
+                Coordinadoor.getCoordinador().guardarCliente(cliente);
+                
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error al obtener datos del formulario");
             }
         });
 
