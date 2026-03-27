@@ -56,5 +56,12 @@ public class Coordinadoor {
     public List<ClienteDTO> obtenerClientes() throws NegocioExcepcion {
         return clienteBO.obtenerClientes();
     }
+    
+    public void eliminarClientes(Long idCliente)throws NegocioExcepcion{
+        clienteBO.eliminar(idCliente);
+    }
+    
+    
+    
 
 }
