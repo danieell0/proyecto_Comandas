@@ -35,7 +35,7 @@ public class frameBase extends JFrame {
         //tamaño del menu 
         sliede.setPreferredSize(new Dimension(0, 0));
 
-        //titulo del panel 
+        //titulo del panell
         setTitle("Sistema de Comandas");
         //tamaño
         setSize(1200, 600);
