@@ -21,7 +21,22 @@ public class ClienteDTO {
     private Double puntosFidelidad;
     private Integer numeroVisitas;
 
-    public ClienteDTO() {}
+    public ClienteDTO() {
+    
+    }
+
+    public ClienteDTO(Long id, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correoElectronico, LocalDate fechaRegistro, Double puntosFidelidad, Integer numeroVisitas) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.telefono = telefono;
+        this.correoElectronico = correoElectronico;
+        this.fechaRegistro = fechaRegistro;
+        this.puntosFidelidad = puntosFidelidad;
+        this.numeroVisitas = numeroVisitas;
+    }
+    
 
     public Long getId() {
         return id;
