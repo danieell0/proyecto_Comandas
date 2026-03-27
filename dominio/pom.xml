@@ -9,7 +9,16 @@
     <artifactId>dominio</artifactId>
     <packaging>jar</packaging>
     <properties>
-        <maven.compiler.release>25</maven.compiler.release>
+        <maven.compiler.release>23</maven.compiler.release>
         <exec.mainClass>com.mycompany.dominio.Dominio</exec.mainClass>
     </properties>
+    
+    <dependencies>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
+        </dependency>
+    </dependencies>
+    
 </project>
