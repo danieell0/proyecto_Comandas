@@ -23,7 +23,7 @@ public class PruebaConexion {
         
         // 1. Obtenemos el EntityManager usando tu clase de conexión
         EntityManager em = ConexionBD.crearConexion();
-        
+        //asd
         try {
             // 2. Iniciamos una transacción (Obligatorio para guardar/modificar/borrar)
             em.getTransaction().begin();

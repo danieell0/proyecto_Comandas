@@ -5,7 +5,7 @@
 package Validadores;
 
 /**
- *
+ * 
  * @author munos
  */
 public class ValidadoresClientes {
