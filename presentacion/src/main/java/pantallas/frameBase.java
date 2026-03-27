@@ -5,6 +5,7 @@
 package pantallas;
 
 import Componentes.Sidebar;
+import Componentes.barraBusqueda;
 import Componentes.formClienteFrecuente;
 import Componentes.panelSuperior;
 import Componentes.tablaClientes;
@@ -12,12 +13,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+
 /**
  *
  * @author Jorge
@@ -26,31 +31,47 @@ public class frameBase extends JFrame {
 
     private boolean menuVisible = false;
 
-    public frameBase(Sidebar sliede, formClienteFrecuente form, panelSuperior pa, tablaClientes tabla) {
+    public frameBase(Sidebar sliede, formClienteFrecuente form, panelSuperior pa, tablaClientes tabla, barraBusqueda barrab) {
+        //tamaño del menu 
         sliede.setPreferredSize(new Dimension(0, 0));
 
+        //titulo del panell
         setTitle("Sistema de Comandas");
-        setSize(1100, 600);
+        //tamaño
+        setSize(1200, 600);
+        //cerramos el frame 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //le agregamos el border layout
         setLayout(new BorderLayout());
 
+        //agregamos elementos 
         add(pa, BorderLayout.NORTH);
         add(sliede, BorderLayout.WEST);
 
-        JPanel panelCentro = new JPanel(new GridLayout(1, 2, 20, 0));
-        panelCentro.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        panelCentro.setBackground(new Color(245, 247, 250));
+        //creamos un panel donde estara la barra de busqueda y la tabla
+        JPanel panelTabla = new JPanel(new BorderLayout());
+        //agregamos los elementos 
+        panelTabla.add(barrab, BorderLayout.NORTH);
+        panelTabla.add(tabla, BorderLayout.CENTER);
 
-        panelCentro.add(form);
-        panelCentro.add(tabla);
+        //utilizamos el JSplitPane para dividir la pantalla en 2
+        JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, form, panelTabla);
+        //este es el tamaño del lado izquierdo 
+        split.setDividerLocation(350);
+        //este es el grosor de la linea divisora 
+        split.setDividerSize(5);
+        //define quien crece cuando cambio el tamaño de la ventana
+        split.setResizeWeight(0);
+        //agrego el split al frame 
+        add(split, BorderLayout.CENTER);
 
-        add(panelCentro, BorderLayout.CENTER);
-
+        //modifico el panel inferior 
         JPanel panelInferior = new JPanel();
         panelInferior.setBackground(new Color(20, 87, 87));
         panelInferior.setPreferredSize(new Dimension(0, 30));
         add(panelInferior, BorderLayout.SOUTH);
 
+        //agrego el action listener del boton del menu 
         pa.getBtnMenu().addActionListener(e -> {
             if (menuVisible) {
                 sliede.setPreferredSize(new Dimension(0, 0));
@@ -63,18 +84,24 @@ public class frameBase extends JFrame {
             sliede.repaint();
         });
 
+        //el action listener del boton de guardar 
         form.getBtnGuardar().addActionListener(e -> {
             tabla.getModelo().addRow(new Object[]{
-                form.getTxtNombre().getText(),
+                form.getTxtNombres().getText(),
+                form.getTxtApellidoPaterno().getText(),
+                form.getTxtApellidoMatero().getText(),
                 form.getTxtTelefono().getText(),
                 form.getTxtTelefono().getText(),
-                0, 0
+                0, 0, "Eliminar"
             });
-            form.getTxtNombre().setText("");
+            form.getTxtNombres().setText("");
+            form.getTxtApellidoPaterno().setText("");
+            form.getTxtApellidoMatero().setText("");
             form.getTxtTelefono().setText("");
             form.getTxtCorreo().setText("");
         });
 
+        //action listener de la tabla
         tabla.getTabla().addMouseListener(new MouseAdapter() {
             public void mouseClicket(MouseEvent e) {
                 if (e.getClickCount() == 2) {
@@ -91,6 +118,43 @@ public class frameBase extends JFrame {
                 }
             }
         });
+        //este es action listener de la barra navegadora  
+        barrab.getTxtBuscar().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (barrab.getTxtBuscar().getText().equals("Search...")) {
+                    barrab.getTxtBuscar().setText("");
+                    barrab.getTxtBuscar().setForeground(Color.BLACK);
+                }
+            }
 
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (barrab.getTxtBuscar().getText().isEmpty()) {
+                    barrab.getTxtBuscar().setText("Search...");
+                    barrab.getTxtBuscar().setText("");
+                    barrab.getTxtBuscar().setForeground(Color.GRAY);
+                }
+            }
+        });
+
+        tabla.getTabla().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //obtenemos la fila seleccionada 
+                int fila = tabla.getTabla().getSelectedRow();
+                //obtenemos la columna seleccionada
+                int columna = tabla.getTabla().getSelectedColumn();
+                //si la columna es identica a 7 quiere decir que quiere eliminar
+                if (columna == 7) {
+                    //preguntamos que si lo desea eliminar
+                    int opcion = JOptionPane.showConfirmDialog(null,"¿Eliminar cliente?","Confirmar",JOptionPane.YES_NO_OPTION);
+                    //si la opcion es si elimina la fila o el registro
+                    if (opcion == JOptionPane.YES_OPTION) {
+                        tabla.getModelo().removeRow(fila);
+                    }
+                }
+            }
+        });
     }
 }

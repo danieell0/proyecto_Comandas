@@ -5,8 +5,6 @@
 package inicio;
 
 import controlador.controlDeNavegacion;
-import pantallas.frameBase;
-
 /**
  *
  * @author Jorge
@@ -19,5 +17,4 @@ public class inicioAplicacion {
     public static void main(String[] args) {
              controlDeNavegacion.getcontrolNavegacion().abrirFrameBase();
     }
-    
 }
