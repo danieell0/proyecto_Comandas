@@ -84,7 +84,7 @@ public class ClienteDAO implements IClienteDAO {
     public List<ClienteFrecuente> obtenerClientes() throws PersistenciaException {
         EntityManager em=ConexionBD.crearConexion();
         try {
-            String comandoJPQL="SELECT p FROM ClienteFrecuente P";
+            String comandoJPQL="SELECT p FROM ClienteFrecuente p";
             TypedQuery<ClienteFrecuente> query=em.createQuery(comandoJPQL,ClienteFrecuente.class);
             return query.getResultList();
         } catch (Exception e) {
