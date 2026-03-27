@@ -17,7 +17,7 @@ public interface IClienteDAO {
     
     public Cliente guardarCliente(Cliente cliente) throws PersistenciaException;
     
-    public boolean eliminarCliente(int idCliente) throws PersistenciaException;
+    public boolean eliminarCliente(Long idCliente) throws PersistenciaException;
     
     public List<ClienteFrecuente> obtenerClientes() throws PersistenciaException;
     

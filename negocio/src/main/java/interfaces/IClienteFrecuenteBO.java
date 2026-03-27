@@ -5,6 +5,7 @@
 package interfaces;
 
 import dto.ClienteDTO;
+import excepciones.NegocioExcepcion;
 import java.util.List;
 
 /**
@@ -12,11 +13,11 @@ import java.util.List;
  * @author munos
  */
 public interface IClienteFrecuenteBO {
-    ClienteDTO registrar(ClienteDTO cliente);
+    void registrar(ClienteDTO cliente) throws NegocioExcepcion;
 
-    boolean eliminar(Long id);
+    boolean eliminar(Long id)throws NegocioExcepcion;
 
-    ClienteDTO editar(ClienteDTO cliente);
+    void editar(ClienteDTO cliente)throws NegocioExcepcion;
     
-    List<ClienteDTO> obtenerClientes();
+    List<ClienteDTO> obtenerClientes()throws NegocioExcepcion;
 }

@@ -59,7 +59,7 @@ public class ClienteDAO implements IClienteDAO {
     }
 
     @Override
-    public boolean eliminarCliente(int idCliente) throws PersistenciaException {
+    public boolean eliminarCliente(Long idCliente) throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();
         try {
             ClienteFrecuente cliente = em.find(ClienteFrecuente.class, idCliente);
