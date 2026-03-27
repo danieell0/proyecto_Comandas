@@ -9,14 +9,18 @@ import Componentes.barraBusqueda;
 import Componentes.formClienteFrecuente;
 import Componentes.panelSuperior;
 import Componentes.tablaClientes;
+import controlador.Coordinador;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -148,7 +152,7 @@ public class frameBase extends JFrame {
                 //si la columna es identica a 7 quiere decir que quiere eliminar
                 if (columna == 7) {
                     //preguntamos que si lo desea eliminar
-                    int opcion = JOptionPane.showConfirmDialog(null,"¿Eliminar cliente?","Confirmar",JOptionPane.YES_NO_OPTION);
+                    int opcion = JOptionPane.showConfirmDialog(null, "¿Eliminar cliente?", "Confirmar", JOptionPane.YES_NO_OPTION);
                     //si la opcion es si elimina la fila o el registro
                     if (opcion == JOptionPane.YES_OPTION) {
                         tabla.getModelo().removeRow(fila);
@@ -156,5 +160,6 @@ public class frameBase extends JFrame {
                 }
             }
         });
+
     }
 }

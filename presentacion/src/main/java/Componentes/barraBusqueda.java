@@ -16,9 +16,9 @@ import javax.swing.JTextField;
  * @author Jorge
  */
 public class barraBusqueda extends JPanel {
-    
+
     private JTextField txtBuscar;
-    
+
     public barraBusqueda() {
         //agregamos un layout 
         setLayout(new BorderLayout());
@@ -31,11 +31,11 @@ public class barraBusqueda extends JPanel {
         //agrego un tamaño 
         txtBuscar.setPreferredSize(new Dimension(200, 30));
         //lo agrego 
-        add(txtBuscar,BorderLayout.CENTER);
+        add(txtBuscar, BorderLayout.CENTER);
     }
 
     public JTextField getTxtBuscar() {
         return txtBuscar;
     }
-    
+
 }
