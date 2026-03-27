@@ -21,17 +21,20 @@ import javax.swing.JTextField;
  */
 public class formClienteFrecuente extends JPanel {
 
-    private JTextField txtNombre;
+    private JTextField txtNombres;
+    private JTextField txtApellidoPaterno;
+    private JTextField txtApellidoMatero;
     private JTextField txtTelefono;
     private JTextField txtCorreo;
     private JButton btnGuardar;
+    private JButton btnEliminar;
 
     public formClienteFrecuente() {
 
         //fondo del formulario 
         setBackground(Color.WHITE);
         //le asignamos 8 filas y 1 columna y una separacion de 10 px
-        setLayout(new GridLayout(8, 1, 10, 10));
+        setLayout(new GridLayout(12, 1, 5, 5));
         //este es el espacio interno
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -41,13 +44,19 @@ public class formClienteFrecuente extends JPanel {
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 16));
 
         //textfield para escribir 
-        txtNombre = new JTextField();
+        txtNombres = new JTextField();
+        txtApellidoPaterno=new JTextField();
+        txtApellidoMatero=new JTextField();
         txtTelefono = new JTextField();
         txtCorreo = new JTextField();
 
         //labels de titulo 
-        JLabel nombre = new JLabel("Nombre");
-        nombre.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        JLabel nombres = new JLabel("Nombre");
+        nombres.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        JLabel apellidoPaterno=new JLabel("Apellido Pateno");
+        apellidoPaterno.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        JLabel apellidoMaterno=new JLabel("Apellido Materno");
+        apellidoMaterno.setFont(new Font("Segoe UI", Font.BOLD, 12));
         JLabel telefono = new JLabel("Telefono");
         telefono.setFont(new Font("Segoe UI", Font.BOLD, 12));
         JLabel correo = new JLabel("Correo");
@@ -60,10 +69,18 @@ public class formClienteFrecuente extends JPanel {
         //color del texto del boton 
         btnGuardar.setForeground(Color.WHITE);
         
+        btnEliminar=new JButton("Eliminar");
+        btnEliminar.setBackground(Color.RED);
+        btnEliminar.setForeground(Color.WHITE);
+        
         //agregamos todo 
         add(titulo);
-        add(nombre);
-        add(txtNombre);
+        add(nombres);
+        add(txtNombres);
+        add(apellidoPaterno);
+        add(txtApellidoPaterno);
+        add(apellidoMaterno);
+        add(txtApellidoMatero);
         add(telefono);
         add(txtTelefono);
         add(correo);
@@ -72,8 +89,8 @@ public class formClienteFrecuente extends JPanel {
 
     }
 
-    public JTextField getTxtNombre() {
-        return txtNombre;
+    public JTextField getTxtNombres() {
+        return txtNombres;
     }
 
     public JTextField getTxtTelefono() {
@@ -87,7 +104,17 @@ public class formClienteFrecuente extends JPanel {
     public JButton getBtnGuardar() {
         return btnGuardar;
     }
-    
-    
 
+    public JTextField getTxtApellidoPaterno() {
+        return txtApellidoPaterno;
+    }
+
+    public JTextField getTxtApellidoMatero() {
+        return txtApellidoMatero;
+    }
+
+    public JButton getBtnEliminar() {
+        return btnEliminar;
+    }
+    
 }

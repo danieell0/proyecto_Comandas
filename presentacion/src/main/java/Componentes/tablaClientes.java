@@ -6,13 +6,18 @@ package Componentes;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -22,33 +27,39 @@ public class tablaClientes extends JPanel {
 
     private JTable tabla;
     private DefaultTableModel modelo;
-    
-    public tablaClientes(){
+
+    public tablaClientes() {
         //creamos un layou para centrarlo 
         setLayout(new BorderLayout());
         //poner un fondo blanco 
         setBackground(Color.WHITE);
         //este es el espacio interno 
-        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
         //fedinimos las columnas de la tabla y las filas empiwzan en 0
-        modelo=new DefaultTableModel(new Object[]{"Nombre","Telefono","Correo","Puntos","Visitas"},0);
+        modelo = new DefaultTableModel(new Object[]{"Nombres", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Puntos", "Visitas", "Eliminar"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int colum) {
+                return colum == 7;
+            }
+        };
         //a la tabla le ponemos el modelo creado 
-        tabla=new JTable(modelo);
+        tabla = new JTable(modelo);
         //altura de las filas 
         tabla.setRowHeight(30);
         //funte de la tabla 
-        tabla.setFont(new Font("Segoe UI", Font.BOLD,13));
+        tabla.setFont(new Font("Segoe UI", Font.BOLD, 13));
         //aqui obtenemos la cabecera de la tabla 
-        JTableHeader header=tabla.getTableHeader();
+        JTableHeader header = tabla.getTableHeader();
         //color de la cabecera 
         header.setBackground(new Color(20, 87, 87));
         //color del texto 
         header.setForeground(Color.white);
         //le ponemos un scroll a la tabla 
-        JScrollPane scroll=new JScrollPane(tabla);
+        JScrollPane scroll = new JScrollPane(tabla);
         //la agregamos al panel
-        add(scroll,BorderLayout.CENTER);
+        add(scroll, BorderLayout.CENTER);
+
     }
 
     public JTable getTabla() {
@@ -58,7 +69,4 @@ public class tablaClientes extends JPanel {
     public DefaultTableModel getModelo() {
         return modelo;
     }
-    
-    
-    
 }

@@ -5,6 +5,7 @@
 package controlador;
 
 import Componentes.Sidebar;
+import Componentes.barraBusqueda;
 import Componentes.formClienteFrecuente;
 import Componentes.panelSuperior;
 import Componentes.tablaClientes;
@@ -32,7 +33,8 @@ public class controlDeNavegacion {
         formClienteFrecuente form=new formClienteFrecuente();
         panelSuperior pa=new panelSuperior("Clientes Frecuentes");
         tablaClientes tabla=new tablaClientes();
-        cambiarPantalla(new frameBase(sliede,form,pa,tabla));
+        barraBusqueda barrab=new barraBusqueda();
+        cambiarPantalla(new frameBase(sliede,form,pa,tabla,barrab));
     }
 
     public void cambiarPantalla(JFrame nuevoFrame) {
