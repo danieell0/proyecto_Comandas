@@ -4,68 +4,93 @@
  */
 package pantallas;
 
+import Componentes.Sidebar;
+import Componentes.formClienteFrecuente;
+import Componentes.panelSuperior;
+import Componentes.tablaClientes;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 /**
  *
  * @author Jorge
  */
 public class frameBase extends JFrame {
 
-    public frameBase() {
-        setTitle("Frame base");
-        setSize(800, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+    private boolean menuVisible = false;
+
+    public frameBase(Sidebar sliede, formClienteFrecuente form, panelSuperior pa, tablaClientes tabla) {
+        sliede.setPreferredSize(new Dimension(0, 0));
+
+        setTitle("Sistema de Comandas");
+        setSize(1100, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        contenido();
-    }
 
-    public void contenido() {
-        
-        //chavales esto es del panel superior eh
-        JPanel panelSuperior = new JPanel();
-        //aqui le agregamos el color azul
-        panelSuperior.setBackground(new Color(0, 102, 102));
-        //le asignamos un tamaño al panel 
-        panelSuperior.setPreferredSize(new Dimension(800, 60));
-        //aqui le decimos que todo lo que entre a este panel estara centrado
-        panelSuperior.setLayout(new FlowLayout(FlowLayout.CENTER));
-        
-        //aqui esta el titulo que aparece arriba, este es el que van a modificar
-        JLabel titulo= new JLabel("Titulo");
-        //aqui le ponemos color al fondo de las letras 
-        titulo.setForeground(Color.WHITE);
-        //formato de letra es arial, negritas, tamaño 20
-        titulo.setFont(new Font("Arial", Font.BOLD, 20));
-        //agregamos el titulo al panel superior 
-        panelSuperior.add(titulo);        
-        
-        //panel central el de color gris maso 
-        JPanel panelCentral=new JPanel();
-        //le agreagamos border layout 
-        panelCentral.setLayout(new BorderLayout());
-        //ponemos el color giris del fondo
-        panelCentral.setBackground(new Color(192,198,204));
-       
-        //panel inferior el que esta hasta abajo
+        add(pa, BorderLayout.NORTH);
+        add(sliede, BorderLayout.WEST);
+
+        JPanel panelCentro = new JPanel(new GridLayout(1, 2, 20, 0));
+        panelCentro.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panelCentro.setBackground(new Color(245, 247, 250));
+
+        panelCentro.add(form);
+        panelCentro.add(tabla);
+
+        add(panelCentro, BorderLayout.CENTER);
+
         JPanel panelInferior = new JPanel();
-        //le agregamos el color azul 
-        panelInferior.setBackground(new Color(0, 102, 102));
-        //la asignamos un tamaño
-        panelInferior.setPreferredSize(new Dimension(800, 50));
-
-        //aqui agregamos los 3 paneles
-        add(panelSuperior, BorderLayout.NORTH);
-        add(panelCentral, BorderLayout.CENTER);
+        panelInferior.setBackground(new Color(20, 87, 87));
+        panelInferior.setPreferredSize(new Dimension(0, 30));
         add(panelInferior, BorderLayout.SOUTH);
-    }
 
+        pa.getBtnMenu().addActionListener(e -> {
+            if (menuVisible) {
+                sliede.setPreferredSize(new Dimension(0, 0));
+            } else {
+                sliede.setPreferredSize(new Dimension(200, 0));
+            }
+            menuVisible = !menuVisible;
+
+            sliede.revalidate();
+            sliede.repaint();
+        });
+
+        form.getBtnGuardar().addActionListener(e -> {
+            tabla.getModelo().addRow(new Object[]{
+                form.getTxtNombre().getText(),
+                form.getTxtTelefono().getText(),
+                form.getTxtTelefono().getText(),
+                0, 0
+            });
+            form.getTxtNombre().setText("");
+            form.getTxtTelefono().setText("");
+            form.getTxtCorreo().setText("");
+        });
+
+        tabla.getTabla().addMouseListener(new MouseAdapter() {
+            public void mouseClicket(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int fila = tabla.getTabla().getSelectedRow();
+                    int col = tabla.getTabla().getSelectedColumn();
+
+                    String valor = tabla.getModelo().getValueAt(fila, col).toString();
+
+                    String nuevo = JOptionPane.showInputDialog("Editar", valor);
+
+                    if (valor != null) {
+                        tabla.getModelo().setValueAt(nuevo, fila, col);
+                    }
+                }
+            }
+        });
+
+    }
 }

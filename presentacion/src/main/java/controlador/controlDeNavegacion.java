@@ -4,6 +4,10 @@
  */
 package controlador;
 
+import Componentes.Sidebar;
+import Componentes.formClienteFrecuente;
+import Componentes.panelSuperior;
+import Componentes.tablaClientes;
 import javax.swing.JFrame;
 import pantallas.frameBase;
 
@@ -24,7 +28,11 @@ public class controlDeNavegacion {
     }
 
     public void abrirFrameBase() {
-        cambiarPantalla(new frameBase());
+        Sidebar sliede=new Sidebar();
+        formClienteFrecuente form=new formClienteFrecuente();
+        panelSuperior pa=new panelSuperior("Clientes Frecuentes");
+        tablaClientes tabla=new tablaClientes();
+        cambiarPantalla(new frameBase(sliede,form,pa,tabla));
     }
 
     public void cambiarPantalla(JFrame nuevoFrame) {
