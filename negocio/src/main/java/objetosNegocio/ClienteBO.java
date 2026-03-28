@@ -78,7 +78,7 @@ public class ClienteBO implements IClienteFrecuenteBO {
     public List<ClienteDTO> obtenerClientes() throws NegocioExcepcion {
         try {
             List<ClienteFrecuente> clientes = clienteDAO.obtenerClientes();
-            return ClienteAdapter.listaEntidadADTO(clientes);
+            return ClienteAdapter.listaEntidadDTO(clientes);
         } catch (PersistenciaException e) {
             throw new NegocioExcepcion("Error al obtener el clientes");
         }
@@ -87,7 +87,7 @@ public class ClienteBO implements IClienteFrecuenteBO {
         try {
             String busqueda = (filtro == null) ? "" : filtro.trim();
             List<ClienteFrecuente> entidades = clienteDAO.consultarPorFiltro(busqueda);
-            return ClienteAdapter.listaEntidadADTO(entidades);
+            return ClienteAdapter.listaEntidadDTO(entidades);
         } catch (PersistenciaException e) {
             throw new NegocioExcepcion("Hubo un error en la busqueda.", e);
         }

@@ -57,7 +57,7 @@ public class Coordinadoor {
         return clienteBO.obtenerClientes();
     }
 
-    public List<ClienteDTO> buscarProductos(String filtro) {
+    public List<ClienteDTO> buscarClientes(String filtro) {
         try {
             return clienteBO.consultarPorFiltro(filtro);
         } catch (NegocioExcepcion e) {

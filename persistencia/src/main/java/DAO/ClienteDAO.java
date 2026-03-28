@@ -97,11 +97,14 @@ public class ClienteDAO implements IClienteDAO {
     public List<ClienteFrecuente> consultarPorFiltro(String filtro) throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();
         try {
-            String jpql = "SELECT c FROM Clientes c WHERE c.nombre LIKE :filtro "+ "OR c.apellido_paterno LIKE :filtro"
-             + "OR c.apellido_materno LIKE :filtro"+ "OR c.telefono LIKE :filtro" + "OR c.correo_electronico LIKE :filtro" ;
+            String jpql = "SELECT c FROM ClienteFrecuente c WHERE c.nombre LIKE :filtro "
+                    + "OR c.apellidoPaterno LIKE :filtro "
+                    + "OR c.apellidoMaterno LIKE :filtro "
+                    + "OR c.telefono LIKE :filtro "
+                    + "OR c.correoElectronico LIKE :filtro";
 
             return em.createQuery(jpql, ClienteFrecuente.class)
-                    .setParameter("filtro", "%" + filtro + "%") 
+                    .setParameter("filtro", "%" + filtro + "%")
                     .getResultList();
         } catch (Exception e) {
             throw new PersistenciaException("Error al realizar la busqueda filtrada", e);
@@ -109,6 +112,5 @@ public class ClienteDAO implements IClienteDAO {
             em.close();
         }
     }
-
 
 }

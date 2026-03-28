@@ -138,7 +138,7 @@ public class ClienteFrecuenteFrame extends JFrame {
 
             private void accionBuscar() {
                 String texto = barrab.getTxtBuscar().getText();
-                List<ClienteDTO> filtrados = Coordinadoor.getCoordinador().buscarProductos(texto);
+                List<ClienteDTO> filtrados = Coordinadoor.getCoordinador().buscarClientes(texto);
                 actualizarTabla(filtrados);
             }
 

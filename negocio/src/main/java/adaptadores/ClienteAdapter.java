@@ -45,13 +45,6 @@ public class ClienteAdapter {
         cliente.setCorreoElectronico(dto.getCorreoElectronico());
         return cliente;
     }
-    public static List<ClienteDTO> listaEntidadADTO(List<ClienteFrecuente> clientes) {
-        List<ClienteDTO> lista = new ArrayList<>();
-        for (ClienteFrecuente c : clientes) {
-            lista.add(entidadADTO(c));
-        }
-        return lista;
-    }
     public static List<ClienteDTO> listaEntidadDTO(List<ClienteFrecuente> clientes) {
         List<ClienteDTO> dtos = new ArrayList<>();
         for (ClienteFrecuente p : clientes) {
