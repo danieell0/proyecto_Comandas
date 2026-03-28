@@ -37,7 +37,7 @@ public class tablaClientes extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         //fedinimos las columnas de la tabla y las filas empiwzan en 0
-        modelo = new DefaultTableModel(new Object[]{"Nombres", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Puntos", "Visitas", "Eliminar"}, 0) {
+        modelo = new DefaultTableModel(new Object[]{"id","Nombres", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Puntos", "Visitas", "Eliminar"}, 0) {
             @Override
             public boolean isCellEditable(int row, int colum) {
                 return colum == 7;

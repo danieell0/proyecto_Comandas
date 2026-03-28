@@ -23,7 +23,7 @@ public class Coordinadoor {
     private static Coordinadoor cordinador;
 
     private ClienteBO clienteBO;
-    
+
     private ClienteFrecuenteFrame frameCliente;
 
     private Coordinadoor() {
@@ -56,8 +56,8 @@ public class Coordinadoor {
     public List<ClienteDTO> obtenerClientes() throws NegocioExcepcion {
         return clienteBO.obtenerClientes();
     }
-    
-     public List<ClienteDTO> buscarProductos(String filtro) {
+
+    public List<ClienteDTO> buscarProductos(String filtro) {
         try {
             return clienteBO.consultarPorFiltro(filtro);
         } catch (NegocioExcepcion e) {
@@ -66,4 +66,7 @@ public class Coordinadoor {
         }
     }
 
+    public void eliminarClientes(Long idCliente) throws NegocioExcepcion {
+        clienteBO.eliminar(idCliente);
+    }
 }

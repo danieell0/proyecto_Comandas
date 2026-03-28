@@ -11,8 +11,7 @@ import Componentes.panelSuperior;
 import Componentes.tablaClientes;
 import controlador.Coordinadoor;
 import dto.ClienteDTO;
-import entidades.Cliente;
-import entidades.ClienteFrecuente;
+import excepciones.NegocioExcepcion;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,6 +26,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -34,9 +34,11 @@ import javax.swing.JSplitPane;
  */
 public class ClienteFrecuenteFrame extends JFrame {
 
-    private boolean menuVisible = false;    
-    
+    private boolean menuVisible = false;
+    private tablaClientes tabla;
+
     public ClienteFrecuenteFrame(Sidebar sliede, formClienteFrecuente form, panelSuperior pa, tablaClientes tabla, barraBusqueda barrab) {
+        this.tabla = tabla;
         //tamaño del menu 
         sliede.setPreferredSize(new Dimension(0, 0));
 
@@ -58,7 +60,9 @@ public class ClienteFrecuenteFrame extends JFrame {
         //agregamos los elementos 
         panelTabla.add(barrab, BorderLayout.NORTH);
         panelTabla.add(tabla, BorderLayout.CENTER);
-
+        tabla.getTabla().getColumnModel().getColumn(0).setMinWidth(0);
+        tabla.getTabla().getColumnModel().getColumn(0).setMaxWidth(0);
+        tabla.getTabla().getColumnModel().getColumn(0).setWidth(0);
         //utilizamos el JSplitPane para dividir la pantalla en 2
         JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, form, panelTabla);
         //este es el tamaño del lado izquierdo 
@@ -161,40 +165,49 @@ public class ClienteFrecuenteFrame extends JFrame {
         tabla.getTabla().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //obtenemos la fila seleccionada 
-                int fila = tabla.getTabla().getSelectedRow();
-                //obtenemos la columna seleccionada
-                int columna = tabla.getTabla().getSelectedColumn();
-                //si la columna es identica a 7 quiere decir que quiere eliminar
-                if (columna == 7) {
-                    //preguntamos que si lo desea eliminar
-                    int opcion = JOptionPane.showConfirmDialog(null, "¿Eliminar cliente?", "Confirmar", JOptionPane.YES_NO_OPTION);
-                    //si la opcion es si elimina la fila o el registro
-                    if (opcion == JOptionPane.YES_OPTION) {
-                        tabla.getModelo().removeRow(fila);
+                
+                    int fila = tabla.getTabla().getSelectedRow();
+                    int columna = tabla.getTabla().getSelectedColumn();
+
+                    if (e.getClickCount() == 1 && columna == 8) {
+                        int opcion = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el cliente?", "Confirmar", JOptionPane.YES_NO_OPTION);
+                        try {
+                            Long id = (Long) tabla.getModelo().getValueAt(fila, 0);
+                            Coordinadoor.getCoordinador().eliminarClientes(id);
+                            cargarTabla();
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null, "Error al eliminar el cliente");
+                        }
+                    }
+
+                    if (e.getClickCount() == 2 && columna != 8) {
+                        String valorActual = tabla.getModelo().getValueAt(fila, columna).toString();
+                        String valorNuevo = JOptionPane.showInputDialog("Editar", valorActual);
+                        if (valorNuevo != null) {
+                            tabla.getModelo().setValueAt(valorNuevo, fila, columna);
+                        }
+
+                        try {
+                            ClienteDTO cliente = new ClienteDTO();
+
+                            cliente.setId((Long) tabla.getModelo().getValueAt(fila, 0));
+                            cliente.setNombre(tabla.getModelo().getValueAt(fila, 1).toString());
+                            cliente.setApellidoPaterno(tabla.getModelo().getValueAt(fila, 2).toString());
+                            cliente.setApellidoMaterno(tabla.getModelo().getValueAt(fila, 3).toString());
+                            cliente.setTelefono(tabla.getModelo().getValueAt(fila, 4).toString());
+                            cliente.setCorreoElectronico(tabla.getModelo().getValueAt(fila, 5).toString());
+                            cliente.setPuntosFidelidad(Double.parseDouble(tabla.getModelo().getValueAt(fila, 6).toString()));
+                            cliente.setNumeroVisitas(Integer.parseInt(tabla.getModelo().getValueAt(fila, 7).toString()));
+                            Coordinadoor.getCoordinador().guardarCliente(cliente);
+
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null, "Error al actualizar el cliente");
+                        }
                     }
                 }
-            }
-        });
-        
-        //el action listener del boton de guardar 
-        form.getBtnGuardar().addActionListener(e -> {
-            tabla.getModelo().addRow(new Object[]{
-                form.getTxtNombres().getText(),
-                form.getTxtApellidoPaterno().getText(),
-                form.getTxtApellidoMatero().getText(),
-                form.getTxtTelefono().getText(),
-                form.getTxtTelefono().getText(),
-                0, 0, "Eliminar"
-            });
-            form.getTxtNombres().setText("");
-            form.getTxtApellidoPaterno().setText("");
-            form.getTxtApellidoMatero().setText("");
-            form.getTxtTelefono().setText("");
-            form.getTxtCorreo().setText("");
         });
 
-        
+        //el action listener del boton de guardar 
         form.getBtnGuardar().addActionListener(e -> {
             try {
                 ClienteDTO cliente = new ClienteDTO();
@@ -203,13 +216,42 @@ public class ClienteFrecuenteFrame extends JFrame {
                 cliente.setApellidoMaterno(form.getTxtApellidoMatero().getText());
                 cliente.setTelefono(form.getTxtTelefono().getText());
                 cliente.setCorreoElectronico(form.getTxtCorreo().getText());
-
                 Coordinadoor.getCoordinador().guardarCliente(cliente);
-                
+                cargarTabla();
+
+                form.getTxtNombres().setText("");
+                form.getTxtApellidoPaterno().setText("");
+                form.getTxtApellidoMatero().setText("");
+                form.getTxtTelefono().setText("");
+                form.getTxtCorreo().setText("");
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error al obtener datos del formulario");
             }
         });
 
     }
+
+    private void cargarTabla() {
+        try {
+            DefaultTableModel modelo = tabla.getModelo();
+            modelo.setRowCount(0);
+
+            Coordinadoor.getCoordinador().obtenerClientes().forEach(cliente -> modelo.addRow(new Object[]{
+                cliente.getId(),
+                cliente.getNombre(),
+                cliente.getApellidoPaterno(),
+                cliente.getApellidoMaterno(),
+                cliente.getTelefono(),
+                cliente.getCorreoElectronico(),
+                cliente.getPuntosFidelidad(),
+                cliente.getNumeroVisitas(),
+                "Eliminar"
+            }));
+        } catch (NegocioExcepcion e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+    }
+
 }
