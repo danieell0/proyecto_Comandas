@@ -5,7 +5,13 @@
 package Validadores;
 
 /**
- * 
+ * Clase utilitaria para la validación estricta de datos de entrada del cliente.
+ * Utiliza Expresiones Regulares (Regex) para asegurar que la información 
+ * cumpla con los formatos, caracteres permitidos y longitudes establecidas 
+ * por las reglas de negocio.
+ * * Además de mantener la integridad de la base de datos, esta clase actúa como 
+ * una capa de seguridad (Input Sanitization/Validation) para prevenir la 
+ * inyección de caracteres inválidos.
  * @author munos
  */
 public class ValidadoresClientes {

@@ -16,7 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- *
+ *Componente visual (Vista) que representa el formulario de captura para un Cliente Frecuente.
+ * Hereda de JPanel para poder ser incrustado en cualquier ventana (JFrame) de la aplicación.
+ * * Este componente es completamente pasivo: se encarga exclusivamente del diseño (UI) 
+ * y no contiene lógica de negocio ni eventos. Expone sus campos de texto y botones 
+ * a través de métodos 'getter' para que un Controlador o Frame padre gestione las acciones.
  * @author Jorge
  */
 public class formClienteFrecuente extends JPanel {

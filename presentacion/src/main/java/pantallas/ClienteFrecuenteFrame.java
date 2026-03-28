@@ -29,7 +29,9 @@ import javax.swing.JSplitPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * Ventana principal (Frame) para la gestión del módulo de Clientes Frecuentes.
+ * Actúa como el Orquestador de la Vista: ensambla todos los componentes gráficos aislados 
+ * (paneles, tablas, formularios) y captura sus eventos para delegarlos al Coordinador.
  * @author Jorge
  */
 public class ClienteFrecuenteFrame extends JFrame {
@@ -37,6 +39,17 @@ public class ClienteFrecuenteFrame extends JFrame {
     private boolean menuVisible = false;
     private tablaClientes tabla;
 
+    /**
+     * Constructor principal del Frame. 
+     * Recibe los componentes visuales mediante Inyección de Dependencias, los acomoda 
+     * usando Layouts (BorderLayout y JSplitPane) y establece los "Listeners" (escuchadores 
+     * de eventos) para los botones, la tabla y la barra de búsqueda.
+     * * @param sliede Menú lateral colapsable.
+     * @param form Formulario para el registro/edición de clientes.
+     * @param pa Panel superior con el botón de menú.
+     * @param tabla Componente que contiene el JTable para mostrar los datos.
+     * @param barrab Componente con el campo de texto para buscar clientes.
+     */
     public ClienteFrecuenteFrame(Sidebar sliede, formClienteFrecuente form, panelSuperior pa, tablaClientes tabla, barraBusqueda barrab) {
         this.tabla = tabla;
         //tamaño del menu 
@@ -232,6 +245,10 @@ public class ClienteFrecuenteFrame extends JFrame {
 
     }
 
+    /**
+     * Método auxiliar para extraer todos los clientes de la base de datos a través 
+     * del coordinador y dibujarlos en el JTable.
+     */
     private void cargarTabla() {
         try {
             DefaultTableModel modelo = tabla.getModelo();

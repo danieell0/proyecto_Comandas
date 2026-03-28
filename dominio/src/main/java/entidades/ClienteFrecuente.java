@@ -13,19 +13,29 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
- *
+ * Esta clase representa a el tipo de cliente frecuente que se registra en el
+ * sistema para poder llevar control de recompensas y estadisticas que se toman
+ * de este tipo de clientes como puntos de fidelidad, numero de visitas y total
+ * gastado, 
+ * 
+ * Es una entidad JPA que se mapea a la tabla clientes_frecuentes en la base de datos
  * @author Benjamin
  */
 @Entity
-@Table(name = "clientes_empresariales")
-@PrimaryKeyJoinColumn(name = "id_cliente")
-@DiscriminatorValue("FRECUENTE")
+@Table(name = "clientes_frecuentes") //nombre de la tabla
+@PrimaryKeyJoinColumn(name = "id_cliente") // atributo que hereda de la clase cliente y es el id
+@DiscriminatorValue("FRECUENTE") //tipo de cliente (valor de el DiscriminatorColumn)
 public class ClienteFrecuente extends Cliente implements Serializable{
     
-    
+    /**
+     * Puntos de fidelidad ganados en base a cada 20 pesos = 1 punto (se usan para recompensar clientes)
+     */
     @Column(name = "puntos_fidelidad")
     private Double puntosFidelidad;
 
+    /**
+     * Numero de visitas totales del cliente frecuente 
+     */
     @Column(name = "numero_visitas")
     private Integer numeroVisitas;
 

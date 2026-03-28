@@ -16,17 +16,26 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- *
+ * Objeto de negocio para la gestion de clientes frecuentes 
+ * toda la logica de negocio en relazion a clientes, actua como intermediario
+ * entre la presentacion y la persistencia 
  * @author munos
  */
 public class ClienteBO implements IClienteFrecuenteBO {
 
     private ClienteDAO clienteDAO = new ClienteDAO();
 
+    /**
+     * Registra un nuevo cliente frecuente en el sistema aplicando las reglas de validación.
+     * Si el cliente es nuevo, se le asigna automáticamente la fecha actual y 0 puntos iniciales.
+     * * @param clienteDTO El objeto con los datos capturados en la pantalla.
+     * @return El ClienteDTO guardado, ya con su ID generado por la base de datos.
+     * @throws NegocioExcepcion Si el cliente no cumple con las reglas (ej. teléfono vacío).
+     */
     @Override
     public void registrar(ClienteDTO cliente) throws NegocioExcepcion {
         try {
-            validadrDatos(cliente);
+            validarDatos(cliente);
 
             ClienteFrecuente entidad = ClienteAdapter.dtoAEntidad(cliente);
             entidad.setFechaRegistro(LocalDate.now());
@@ -39,7 +48,37 @@ public class ClienteBO implements IClienteFrecuenteBO {
             throw new NegocioExcepcion("Error al registrar cliente");
         }
     }
+   
+    
+    /**
+     * NO IMPLEMENTADO AUN
+     * 
+     * Calcula y actualiza los puntos de fidelidad de un cliente basado en el total de su comanda.
+     * La regla de negocio estipula que cada 20 pesos de gasto generan 1 punto de fidelidad.
+     * * @param idCliente El identificador único del cliente frecuente.
+     * @param totalGasto El monto total en pesos de la comanda actual.
+     * @throws NegocioExcepcion Si ocurre un error al actualizar los datos.
+     */
+    public void agregarPuntosPorCompra(Long idCliente, Double totalGasto) throws NegocioExcepcion {
+        try {
+            // Lógica de Negocio: Calcular puntos (20 pesos = 1 punto)
+            Double puntosGanados = totalGasto / 20.0;
+            
+            // Aquí iría el código para buscar al cliente en el DAO, 
+            // sumarle los puntosGanados a sus puntosFidelidad actuales, 
+            // aumentarle el numeroVisitas + 1, y mandarlo a editar() al DAO.
+            
+        } catch (Exception e) {
+             throw new NegocioExcepcion("No se pudieron actualizar los puntos del cliente.");
+        }
+    }
 
+    /**
+     * Elimina un cliente frecuente del sistema basándose en su identificador único.
+     * * @param id El ID numérico del cliente a eliminar.
+     * @return true si el cliente fue eliminado correctamente.
+     * @throws NegocioExcepcion Si el ID es nulo, el cliente no existe, o hay un error de conexión.
+     */
     @Override
     public boolean eliminar(Long id) throws NegocioExcepcion {
         try {
@@ -56,6 +95,12 @@ public class ClienteBO implements IClienteFrecuenteBO {
         }
     }
 
+    /**
+     * Actualiza la información personal de un cliente existente.
+     * Verifica que el DTO contenga un ID válido antes de intentar la sobreescritura.
+     * * @param cliente Objeto DTO con los datos modificados.
+     * @throws NegocioExcepcion Si el cliente es nulo, no tiene ID, o falla la validación de formato.
+     */
     @Override
     public void editar(ClienteDTO cliente) throws NegocioExcepcion {
         try {
@@ -65,7 +110,7 @@ public class ClienteBO implements IClienteFrecuenteBO {
             if (cliente.getId() == null) {
                 throw new NegocioExcepcion("No se puede actualizar un cliente sin ID");
             }
-            validadrDatos(cliente);
+            validarDatos(cliente);
             ClienteFrecuente entidad = ClienteAdapter.dtoAEntidad(cliente);
             clienteDAO.editar(entidad);
         } catch (PersistenciaException e) {
@@ -74,6 +119,11 @@ public class ClienteBO implements IClienteFrecuenteBO {
 
     }
 
+    /**
+     * Recupera el catálogo completo de clientes frecuentes registrados.
+     * * @return Una lista de {@link ClienteDTO} lista para ser mostrada en tablas.
+     * @throws NegocioExcepcion Si la consulta a la base de datos falla.
+     */
     @Override
     public List<ClienteDTO> obtenerClientes() throws NegocioExcepcion {
         try {
@@ -83,6 +133,14 @@ public class ClienteBO implements IClienteFrecuenteBO {
             throw new NegocioExcepcion("Error al obtener el clientes");
         }
     }
+    
+    /**
+     * Busca clientes que coincidan con un criterio de texto específico (nombre, teléfono, etc.).
+     * Si el filtro es nulo, realiza una búsqueda limpia.
+     * * @param filtro Texto introducido por el usuario en la barra de búsqueda.
+     * @return Lista de DTOs que coinciden con el filtro.
+     * @throws NegocioExcepcion Si ocurre un error durante la búsqueda en la BD.
+     */
     public List<ClienteDTO> consultarPorFiltro(String filtro) throws NegocioExcepcion {
         try {
             String busqueda = (filtro == null) ? "" : filtro.trim();
@@ -94,7 +152,7 @@ public class ClienteBO implements IClienteFrecuenteBO {
     }
 
 
-    public void validadrDatos(ClienteDTO cliente) throws NegocioExcepcion {
+    public void validarDatos(ClienteDTO cliente) throws NegocioExcepcion {
         if (cliente == null) {
             throw new NegocioExcepcion("El cliente no puede ser nulo");
         }

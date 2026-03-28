@@ -21,6 +21,8 @@ import javax.persistence.Table;
  * es decir estan involucrados con una comanda, y almacenamos la informacion de estos
  * que nos permite un mejor servicio al cliente y control de sus operaciones 
  * involucradas
+ * 
+ * Es una entidad JPA que se mapea a la table clientes en la base de datos 
  * @author Benjamin
  */
 @Entity
@@ -29,34 +31,64 @@ import javax.persistence.Table;
 @DiscriminatorColumn(name = "tipo_cliente") //columna para diferenciar el tipo
 public class Cliente implements Serializable {
     
+    /**
+     * Id del cliente, diferenciador numerico unico
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cliente")
     private Long id;
     
+    /**
+     * Nombre del cliente
+     */
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
     
+    /**
+     * Apellido paterno
+     */
     @Column(name = "apellido_paterno", length = 100)
     private String apellidoPaterno;
 
+    /**
+     * Apellido materno
+     */
     @Column(name = "apellido_materno", length = 100)
     private String apellidoMaterno;
 
+    /**
+     * Telefono del cliente 
+     */
     @Column(name = "telefono", length = 20)
     private String telefono;
 
+    /**
+     * Fecha de registro del cliente (Cuando se guardo en el sistema)
+     */
     @Column(name = "fecha_registro")
     private LocalDate fechaRegistro;
 
+    /**
+     * Correo electronico 
+     */
     @Column(name = "correo_electronico", length = 100)
     private String correoElectronico;
 
+    /**
+     * FALTA CORREGIR YA QUE ES UN ATRIBUTO CALCULADO DE CLIENTE FRECUENTE
+     */
     @Column(name = "gasto_total_acumulado")
     private Double gastoTotalAcumulado;
     
+    /**
+     * Constructor por omision
+     */
     public Cliente(){}
-    
+  
+    /**
+     * Constructor con todos los datos
+     */
     public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, LocalDate fechaRegistro, String correoElectronico, Double gastoTotalAcumulado) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;

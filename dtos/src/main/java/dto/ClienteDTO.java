@@ -7,10 +7,15 @@ package dto;
 import java.time.LocalDate;
 
 /**
- *
+ * Objeto de transferencia de datos que representa a un cliente frecuente 
+ * que actua como un contenedor seguro para la transferencia de datos a traves
+ * del sistema 
  * @author munos
  */
 public class ClienteDTO {
+    /**
+     * Identifiacdor unico del cliente 
+     */
     private Long id;
     private String nombre;
     private String apellidoPaterno;
@@ -18,13 +23,23 @@ public class ClienteDTO {
     private String telefono;
     private String correoElectronico;
     private LocalDate fechaRegistro;
+    /**
+     * Puntos de fidelidad acumulados de compras anteriores 
+     */
     private Double puntosFidelidad;
+    /**
+     * Numero de visitas totales 
+     */
     private Integer numeroVisitas;
 
     public ClienteDTO() {
     
     }
 
+    /**
+     * Constructor utilizado para poblar el dto con toda la informacion de un 
+     * cliente frecuente y trasladarla a traves del sistema con seguridad
+     */
     public ClienteDTO(Long id, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correoElectronico, LocalDate fechaRegistro, Double puntosFidelidad, Integer numeroVisitas) {
         this.id = id;
         this.nombre = nombre;

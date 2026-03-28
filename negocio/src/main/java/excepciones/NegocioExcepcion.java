@@ -5,11 +5,11 @@
 package excepciones;
 
 /**
- *
+ * Excepcion personalizada para la capa de negocio
  * @author munos
  */
 public class NegocioExcepcion extends Exception {
-
+    
     public NegocioExcepcion(String message) {
         super(message);
     }

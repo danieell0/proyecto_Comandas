@@ -16,20 +16,43 @@ import pantallas.ClienteFrecuenteFrame;
 
 /**
  *
+ * Controlador principal (Coordinador) para el módulo de Clientes Frecuentes.
+ * Implementa el patrón Singleton para garantizar una única instancia global que 
+ * gestione la comunicación entre las interfaces gráficas (Vistas) y la capa de Negocio (BO).
+ * Su responsabilidad es recibir las peticiones del usuario, delegarlas al BO y 
+ * mostrar mensajes de retroalimentación visual (JOptionPanes).
  * @author munos
  */
 public class Coordinadoor {
 
+    /**
+     * Instancia estática y única de la clase (Patrón Singleton).
+     */
     private static Coordinadoor cordinador;
 
+    /**
+     * Objeto de negocio que contiene toda la lógica y reglas de validación.
+     */
     private ClienteBO clienteBO;
 
+    /**
+     * Referencia a la pantalla principal del módulo de clientes.
+     */
     private ClienteFrecuenteFrame frameCliente;
 
+    /**
+     * Constructor privado para evitar que otras clases usen "new Coordinadoor()".
+     * Fuerza el uso del método getCoordinador() para aplicar el patrón Singleton.
+     */
     private Coordinadoor() {
         clienteBO = new ClienteBO();
     }
 
+    /**
+     * Punto de acceso global a la única instancia del Coordinador.
+     * Si la instancia no existe, la crea; si ya existe, la devuelve.
+     * * @return La instancia única de {@link Coordinadoor}.
+     */
     public static Coordinadoor getCoordinador() {
         if (cordinador == null) {
             cordinador = new Coordinadoor();
@@ -37,6 +60,13 @@ public class Coordinadoor {
         return cordinador;
     }
 
+    /**
+     * Método inteligente que decide si debe registrar o actualizar un cliente.
+     * Si el DTO no tiene ID, asume que es un cliente nuevo y lo registra.
+     * Si el DTO ya tiene ID, asume que es una modificación y lo edita.
+     * Además, gestiona los mensajes visuales (éxito o error) para el usuario.
+     * * @param cliente Objeto DTO con los datos enviados desde la pantalla.
+     */
     public void guardarCliente(ClienteDTO cliente) {
 
         try {
@@ -53,10 +83,21 @@ public class Coordinadoor {
         }
     }
 
+    /**
+     * Solicita a la capa de negocio la lista completa de clientes frecuentes.
+     * * @return Lista de {@link ClienteDTO} para poblar las tablas visuales.
+     * @throws NegocioExcepcion Si ocurre un error al obtener los datos.
+     */
     public List<ClienteDTO> obtenerClientes() throws NegocioExcepcion {
         return clienteBO.obtenerClientes();
     }
 
+    /**
+     * Realiza una búsqueda filtrada de clientes manejando internamente las excepciones.
+     * Si ocurre un error en la búsqueda, muestra un mensaje al usuario y retorna null.
+     * * @param filtro Texto introducido en la barra de búsqueda de la pantalla.
+     * @return Lista de DTOs coincidentes, o null si ocurre un error.
+     */
     public List<ClienteDTO> buscarClientes(String filtro) {
         try {
             return clienteBO.consultarPorFiltro(filtro);
@@ -66,6 +107,11 @@ public class Coordinadoor {
         }
     }
 
+    /**
+     * Solicita la eliminación de un cliente a la capa de negocio.
+     * * @param idCliente Identificador del cliente a eliminar.
+     * @throws NegocioExcepcion Si el cliente no existe o hay un error de conexión.
+     */
     public void eliminarClientes(Long idCliente) throws NegocioExcepcion {
         clienteBO.eliminar(idCliente);
     }
