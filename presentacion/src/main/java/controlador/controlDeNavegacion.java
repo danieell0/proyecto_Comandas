@@ -11,6 +11,7 @@ import Componentes.panelSuperior;
 import Componentes.tablaClientes;
 import javax.swing.JFrame;
 import pantallas.ClienteFrecuenteFrame;
+import pantallas.MenuPrincipalFrame;
 
 /**
  *
@@ -20,6 +21,12 @@ public class controlDeNavegacion {
 
     private static controlDeNavegacion controlNavegacion;
     private JFrame frameActual;
+    
+    public void abrirMenuPrincipal() {
+    Sidebar sidebar = new Sidebar();
+    panelSuperior pa = new panelSuperior("Menú Principal");
+    cambiarPantalla(new MenuPrincipalFrame(sidebar, pa));    
+    }
 
     public static controlDeNavegacion getcontrolNavegacion() {
         if (controlNavegacion == null) {

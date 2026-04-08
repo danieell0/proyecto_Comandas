@@ -15,6 +15,6 @@ public class inicioAplicacion {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-             controlDeNavegacion.getcontrolNavegacion().abrirFrameBase();
+        controlDeNavegacion.getcontrolNavegacion().abrirMenuPrincipal();
     }
 }
