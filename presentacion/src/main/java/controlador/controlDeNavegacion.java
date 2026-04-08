@@ -12,6 +12,8 @@ import Componentes.tablaClientes;
 import javax.swing.JFrame;
 import pantallas.ClienteFrecuenteFrame;
 import pantallas.MenuPrincipalFrame;
+import pantallas.ReporteClientesFrame;
+import pantallas.ReportesComandasFrame;
 
 /**
  *
@@ -53,6 +55,18 @@ public class controlDeNavegacion {
 
         nuevoFrame.setVisible(true);
         nuevoFrame.setLocationRelativeTo(null);
+    }
+    
+    public void abrirReportesComandas(){
+          Sidebar sliede=new Sidebar();
+           panelSuperior pa=new panelSuperior("Reportes Comandas");
+           cambiarPantalla(new ReportesComandasFrame(pa, sliede));
+    }
+    
+    public void abrirReportesClientes(){
+          Sidebar sliede=new Sidebar();
+           panelSuperior pa=new panelSuperior("Reportes Clientes");
+           cambiarPantalla(new ReporteClientesFrame(pa, sliede));
     }
 
 }

@@ -149,7 +149,7 @@ public class ClienteBO implements IClienteFrecuenteBO {
         } catch (PersistenciaException e) {
             throw new NegocioExcepcion("Hubo un error en la busqueda.", e);
         }
-    }
+    } 
 
 
     public void validarDatos(ClienteDTO cliente) throws NegocioExcepcion {
