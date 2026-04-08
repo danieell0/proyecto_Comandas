@@ -34,7 +34,7 @@ public class MenuPrincipalFrame extends JFrame {
         add(sidebar, BorderLayout.WEST);
 
         JPanel panelCentral = new JPanel();
-        panelCentral.setLayout(new GridLayout(2, 3, 30, 30));
+        panelCentral.setLayout(new GridLayout(2, 3, 30, 30));        
         panelCentral.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panelCentral.setBackground(new Color(220, 225, 230));
 
@@ -43,15 +43,13 @@ public class MenuPrincipalFrame extends JFrame {
         JButton btnIngredientes = crearBoton("Ingredientes", new Color(184, 115, 51));
         JButton btnClientes = crearBoton("Clientes Frecuentes", new Color(150, 70, 150));
         JButton btnReportes = crearBoton("Reportes", new Color(100, 100, 100));
-        JButton btnAgregar = crearBoton("Agregar módulo", new Color(220, 50, 50));
-
+        
         panelCentral.add(btnComandas);
         panelCentral.add(btnProductos);
         panelCentral.add(btnIngredientes);
         panelCentral.add(btnClientes);
         panelCentral.add(btnReportes);
-        panelCentral.add(btnAgregar);
-
+        
         add(panelCentral, BorderLayout.CENTER);
 
         JPanel panelInferior = new JPanel();
@@ -76,7 +74,6 @@ public class MenuPrincipalFrame extends JFrame {
         btnIngredientes.addActionListener(e -> abrir("Ingredientes"));
         btnClientes.addActionListener(e -> abrir("Clientes Frecuentes"));
         btnReportes.addActionListener(e -> abrir("Reportes"));
-        btnAgregar.addActionListener(e -> abrir("Agregar módulo"));
     }
 
     private JButton crearBoton(String texto, Color color) {

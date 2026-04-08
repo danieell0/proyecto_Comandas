@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -23,87 +25,74 @@ import javax.swing.JPanel;
 public class Sidebar extends JPanel {
 
     public Sidebar() {
-        //aqui es donde le ponemos el color de fondo al menu 
         setBackground(new Color(20, 87, 87));
-        // esto es lo ancho del menu
         setPreferredSize(new Dimension(200, 0));
-        //con esto decimos que se acomodara todo verticalmente 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        //este es el titulo que aparece
-        JLabel titulo=new JLabel("Comandas");
-        //este es el color del texto que esta como titulo 
-        titulo.setForeground(Color.WHITE);
-        //este es el estilo de la letra del titulo 
-        titulo.setFont(new Font("Segoe UI",Font.BOLD,18));
-        //aqui sentramos el titulo
-        titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        // este es el espacio de arriba o el padding 
-        add(Box.createVerticalStrut(30));
-        //agregamos el titulo al menu 
-        add(titulo); 
-        JButton btnAgregar = crearBoton("Menu Principal", new Color(220, 50, 50));
-        JButton btnComandas = crearBoton("Comandas", new Color(63, 63, 160));
-        JButton btnProductos = crearBoton("Productos", new Color(46, 139, 87));
-        JButton btnIngredientes = crearBoton("Ingredientes", new Color(184, 115, 51));
-        JButton btnClientes = crearBoton("Clientes Frecuentes", new Color(150, 70, 150));
-        JButton btnReportes = crearBoton("Reportes", new Color(100, 100, 100));
-        
-        btnAgregar.addActionListener(e -> abrir("Menu Principal"));
-        btnComandas.addActionListener(e -> abrir("Comandas"));
-        btnProductos.addActionListener(e -> abrir("Productos"));
-        btnIngredientes.addActionListener(e -> abrir("Ingredientes"));
-        btnClientes.addActionListener(e -> abrir("Clientes Frecuentes"));
-        btnReportes.addActionListener(e -> abrir("Reportes"));
-        }
-        private JButton crearBoton(String texto, Color color) {
-        JButton btn = new JButton(texto);
 
+        add(Box.createVerticalStrut(30));
+
+        JLabel titulo = new JLabel("Menu Rapido");
+        titulo.setForeground(Color.WHITE);
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        add(titulo);
+        add(Box.createVerticalStrut(20));
+
+        add(crearBoton("Menu Principal", new Color(220, 50, 50)));
+        add(crearBoton("Comandas", new Color(63, 63, 160)));
+        add(crearBoton("Productos", new Color(46, 139, 87)));
+        add(crearBoton("Ingredientes", new Color(184, 115, 51)));
+        add(crearBoton("Clientes Frecuentes", new Color(150, 70, 150)));
+        add(crearBoton("Reportes", new Color(100, 100, 100)));
+    }
+
+    private JButton crearBoton(String texto, Color color) {
+        JButton btn = new JButton(texto);
+        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
         btn.setFocusPainted(false);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btn.setForeground(Color.WHITE);
         btn.setBackground(color);
-        btn.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        btn.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+        btn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
                 btn.setBackground(color.darker());
             }
 
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(MouseEvent e) {
                 btn.setBackground(color);
             }
         });
 
+        btn.addActionListener(e -> abrir(texto));
+        add(Box.createVerticalStrut(10));
         return btn;
     }
 
-        private void abrir(String modulo) {
+    private void abrir(String modulo) {
         controlDeNavegacion nav = controlDeNavegacion.getcontrolNavegacion();
+
         switch (modulo) {
-
-            case "Clientes Frecuentes":
-                nav.abrirFrameBase();
+            case "Menu Principal":
+                nav.abrirMenuPrincipal();
                 break;
-
             case "Comandas":
                 nav.abrirFrameBase();
                 break;
-
             case "Productos":
                 nav.abrirFrameBase();
                 break;
-
             case "Ingredientes":
                 nav.abrirFrameBase();
                 break;
-
+            case "Clientes Frecuentes":
+                nav.abrirFrameBase();
+                break;
             case "Reportes":
                 nav.abrirFrameBase();
                 break;
-
-            default:
-                nav.abrirMenuPrincipal();
         }
     }
-    }
-
+}
