@@ -11,6 +11,7 @@ import Componentes.panelSuperior;
 import Componentes.tablaClientes;
 import javax.swing.JFrame;
 import pantallas.ClienteFrecuenteFrame;
+import pantallas.ComandasFrame;
 import pantallas.MenuPrincipalFrame;
 import pantallas.ReporteClientesFrame;
 import pantallas.ReportesComandasFrame;
@@ -68,5 +69,11 @@ public class controlDeNavegacion {
            panelSuperior pa=new panelSuperior("Reportes Clientes");
            cambiarPantalla(new ReporteClientesFrame(pa, sliede));
     }
+    public void abrirComandas() {
+    Sidebar sidebar = new Sidebar();
+    panelSuperior pa = new panelSuperior("Comandas");
+
+    cambiarPantalla(new ComandasFrame(sidebar, pa));
+}
 
 }

@@ -14,10 +14,14 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import controlador.controlDeNavegacion; 
+import controlador.controlDeNavegacion;
 
+/**
+ *
+ *
+ * @author munos
+ */
 public class MenuPrincipalFrame extends JFrame {
 
     private boolean menuVisible = false;
@@ -34,7 +38,7 @@ public class MenuPrincipalFrame extends JFrame {
         add(sidebar, BorderLayout.WEST);
 
         JPanel panelCentral = new JPanel();
-        panelCentral.setLayout(new GridLayout(2, 3, 30, 30));        
+        panelCentral.setLayout(new GridLayout(2, 3, 30, 30));
         panelCentral.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panelCentral.setBackground(new Color(220, 225, 230));
 
@@ -43,13 +47,13 @@ public class MenuPrincipalFrame extends JFrame {
         JButton btnIngredientes = crearBoton("Ingredientes", new Color(184, 115, 51));
         JButton btnClientes = crearBoton("Clientes Frecuentes", new Color(150, 70, 150));
         JButton btnReportes = crearBoton("Reportes", new Color(100, 100, 100));
-        
+
         panelCentral.add(btnComandas);
         panelCentral.add(btnProductos);
         panelCentral.add(btnIngredientes);
         panelCentral.add(btnClientes);
         panelCentral.add(btnReportes);
-        
+
         add(panelCentral, BorderLayout.CENTER);
 
         JPanel panelInferior = new JPanel();
@@ -109,7 +113,7 @@ public class MenuPrincipalFrame extends JFrame {
                 break;
 
             case "Comandas":
-                nav.abrirFrameBase();
+                nav.abrirComandas();
                 break;
 
             case "Productos":

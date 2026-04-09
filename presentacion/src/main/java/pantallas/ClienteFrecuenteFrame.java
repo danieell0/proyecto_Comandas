@@ -56,7 +56,7 @@ public class ClienteFrecuenteFrame extends JFrame {
         sliede.setPreferredSize(new Dimension(0, 0));
 
         //titulo del panell
-        setTitle("Sistema de Comandas");
+        setTitle("Clientes frecuentes");
         //tamaño
         setSize(1200, 600);
         //cerramos el frame 
@@ -264,7 +264,8 @@ public class ClienteFrecuenteFrame extends JFrame {
                 cliente.getPuntosFidelidad(),
                 cliente.getNumeroVisitas(),
                 "Eliminar"
-            }));
+  
+          }));
         } catch (NegocioExcepcion e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
