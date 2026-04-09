@@ -110,7 +110,7 @@ public class Coordinadoor {
     /**
      * Solicita la eliminación de un cliente a la capa de negocio.
      * * @param idCliente Identificador del cliente a eliminar.
-     * @throws NegocioExcepcion Si el cliente no existe o hay un error de conexión.
+     * @throws NegocioExcepcion Si el cliente no existe o h ay un error de conexión.
      */
     public void eliminarClientes(Long idCliente) throws NegocioExcepcion {
         clienteBO.eliminar(idCliente);

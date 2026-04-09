@@ -60,26 +60,20 @@ public class Cliente implements Serializable {
     /**
      * Telefono del cliente 
      */
-    @Column(name = "telefono", length = 20)
+    @Column(name = "telefono", length = 20, nullable = false)
     private String telefono;
 
+    /**
+     * Correo electronico 
+     */
+    @Column(name = "correo_electronico", length = 100, nullable = true)   //ES OPCIONAL
+    private String correoElectronico;
+    
     /**
      * Fecha de registro del cliente (Cuando se guardo en el sistema)
      */
     @Column(name = "fecha_registro")
     private LocalDate fechaRegistro;
-
-    /**
-     * Correo electronico 
-     */
-    @Column(name = "correo_electronico", length = 100)
-    private String correoElectronico;
-
-    /**
-     * FALTA CORREGIR YA QUE ES UN ATRIBUTO CALCULADO DE CLIENTE FRECUENTE
-     */
-    @Column(name = "gasto_total_acumulado")
-    private Double gastoTotalAcumulado;
     
     /**
      * Constructor por omision
@@ -89,14 +83,13 @@ public class Cliente implements Serializable {
     /**
      * Constructor con todos los datos
      */
-    public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, LocalDate fechaRegistro, String correoElectronico, Double gastoTotalAcumulado) {
+    public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, LocalDate fechaRegistro, String correoElectronico) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
         this.fechaRegistro = fechaRegistro;
         this.correoElectronico = correoElectronico;
-        this.gastoTotalAcumulado = gastoTotalAcumulado;
     }
     //para pruebas
     public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, String telefono) {
@@ -129,7 +122,5 @@ public class Cliente implements Serializable {
     public String getCorreoElectronico() { return correoElectronico; }
     public void setCorreoElectronico(String correoElectronico) { this.correoElectronico = correoElectronico; }
 
-    public Double getGastoTotalAcumulado() { return gastoTotalAcumulado; }
-    public void setGastoTotalAcumulado(Double gastoTotalAcumulado) { this.gastoTotalAcumulado = gastoTotalAcumulado; }
-    
+
 }
