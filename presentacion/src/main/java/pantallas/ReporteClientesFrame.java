@@ -156,7 +156,7 @@ public class ReporteClientesFrame extends JFrame {
         add(panelInferior, BorderLayout.SOUTH);
         
         
-        //hola mundoooooo
+       
     }
 
 }
