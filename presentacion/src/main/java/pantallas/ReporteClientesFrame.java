@@ -154,6 +154,9 @@ public class ReporteClientesFrame extends JFrame {
         panelInferior.setBackground(new Color(20, 87, 87));
         panelInferior.setPreferredSize(new Dimension(0, 65));
         add(panelInferior, BorderLayout.SOUTH);
+        
+        
+        //hola mundoooooo
     }
 
 }
