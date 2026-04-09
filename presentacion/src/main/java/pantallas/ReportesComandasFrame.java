@@ -127,6 +127,7 @@ public class ReportesComandasFrame extends JFrame {
         btnRegresar.setForeground(Color.WHITE);
         //creamos un panel para los botones 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        //hacemos que se vea el colo del panel centro 
         panelBotones.setOpaque(false);
         //agregamos los botones
         panelBotones.add(btnPDF);
