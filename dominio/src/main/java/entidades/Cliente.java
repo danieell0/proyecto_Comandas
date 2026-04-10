@@ -18,11 +18,12 @@ import javax.persistence.Table;
 
 /**
  * La clase 'Cliente' representa a las personas que compran en el restaurante,
- * es decir estan involucrados con una comanda, y almacenamos la informacion de estos
- * que nos permite un mejor servicio al cliente y control de sus operaciones 
- * involucradas
- * 
- * Es una entidad JPA que se mapea a la table clientes en la base de datos 
+ * es decir estan involucrados con una comanda, y almacenamos la informacion de
+ * estos que nos permite un mejor servicio al cliente y control de sus
+ * operaciones involucradas
+ *
+ * Es una entidad JPA que se mapea a la table clientes en la base de datos
+ *
  * @author Benjamin
  */
 @Entity
@@ -30,7 +31,7 @@ import javax.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED) //estrategia de tabla por subclase
 @DiscriminatorColumn(name = "tipo_cliente") //columna para diferenciar el tipo
 public class Cliente implements Serializable {
-    
+
     /**
      * Id del cliente, diferenciador numerico unico
      */
@@ -38,13 +39,13 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cliente")
     private Long id;
-    
+
     /**
      * Nombre del cliente
      */
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
-    
+
     /**
      * Apellido paterno
      */
@@ -58,28 +59,30 @@ public class Cliente implements Serializable {
     private String apellidoMaterno;
 
     /**
-     * Telefono del cliente 
+     * Telefono del cliente
      */
     @Column(name = "telefono", length = 20, nullable = false)
     private String telefono;
 
     /**
-     * Correo electronico 
+     * Correo electronico
      */
     @Column(name = "correo_electronico", length = 100, nullable = true)   //ES OPCIONAL
     private String correoElectronico;
-    
+
     /**
-     * Fecha de registro del cliente (Cuando se guardo en el sistema)
+     * Fecha de registro del cliente 
      */
     @Column(name = "fecha_registro")
     private LocalDate fechaRegistro;
-    
+
     /**
      * Constructor por omision
      */
-    public Cliente(){}
-  
+    public Cliente() {
+        
+    }
+
     /**
      * Constructor con todos los datos
      */
@@ -91,7 +94,7 @@ public class Cliente implements Serializable {
         this.fechaRegistro = fechaRegistro;
         this.correoElectronico = correoElectronico;
     }
-    //para pruebas
+
     public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, String telefono) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -99,28 +102,62 @@ public class Cliente implements Serializable {
         this.telefono = telefono;
     }
     
-    // --- Getters y Setters ---
+    
+    
+    public Long getId() {
+        return id;
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public String getApellidoPaterno() { return apellidoPaterno; }
-    public void setApellidoPaterno(String apellidoPaterno) { this.apellidoPaterno = apellidoPaterno; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public String getApellidoMaterno() { return apellidoMaterno; }
-    public void setApellidoMaterno(String apellidoMaterno) { this.apellidoMaterno = apellidoMaterno; }
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
+    }
 
-    public String getTelefono() { return telefono; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
 
-    public LocalDate getFechaRegistro() { return fechaRegistro; }
-    public void setFechaRegistro(LocalDate fechaRegistro) { this.fechaRegistro = fechaRegistro; }
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
 
-    public String getCorreoElectronico() { return correoElectronico; }
-    public void setCorreoElectronico(String correoElectronico) { this.correoElectronico = correoElectronico; }
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
 
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public LocalDate getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+    }
 
 }

@@ -38,8 +38,7 @@ public class Empleado implements Serializable {
     public Empleado() {
     }
 
-    public Empleado(Long id, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String puesto, Long suelto) {
-        this.id = id;
+    public Empleado(String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String puesto, Long suelto) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;

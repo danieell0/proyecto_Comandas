@@ -50,13 +50,15 @@ public class Ingrediente implements Serializable{
     /**
      * Constructor por omision
      */
-    public Ingrediente(){}
+    public Ingrediente(){
+    
+    }
 
     /**
      * Constructor con todos los atributos
      */
-    public Ingrediente(Long id, String nombre, String unidadMedida, Double cantidadActual) {
-        this.id = id;
+
+    public Ingrediente(String nombre, String unidadMedida, Double cantidadActual) {
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
         this.cantidadActual = cantidadActual;

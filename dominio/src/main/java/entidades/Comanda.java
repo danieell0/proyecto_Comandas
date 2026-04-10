@@ -79,8 +79,7 @@ public class Comanda implements Serializable {
     public Comanda() {
     }
 
-    public Comanda(Long id, String folio, LocalDateTime fechaHora, Double totalVenta, EstadoComanda estado, EmpleadoMesero mesero, Cliente cliente, Mesa mesa, List<DetalleProducto> detalles) {
-        this.id = id;
+    public Comanda(String folio, LocalDateTime fechaHora, Double totalVenta, EstadoComanda estado, EmpleadoMesero mesero, Cliente cliente, Mesa mesa) {
         this.folio = folio;
         this.fechaHora = fechaHora;
         this.totalVenta = totalVenta;
@@ -88,7 +87,6 @@ public class Comanda implements Serializable {
         this.mesero = mesero;
         this.cliente = cliente;
         this.mesa = mesa;
-        this.detalles = detalles;
     }
 
     public Long getId() {

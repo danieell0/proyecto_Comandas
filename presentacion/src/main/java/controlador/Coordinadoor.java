@@ -4,7 +4,6 @@
  */
 package controlador;
 
-import DAO.ClienteDAO;
 import dto.ClienteDTO;
 import entidades.ClienteFrecuente;
 import excepciones.NegocioExcepcion;

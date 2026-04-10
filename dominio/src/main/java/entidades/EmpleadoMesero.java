@@ -5,6 +5,7 @@
 package entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -20,15 +21,19 @@ import javax.persistence.Table;
 @Table(name = "empleados_meseros")
 @DiscriminatorValue("MESERO")
 @PrimaryKeyJoinColumn(name = "id_empleado")
-public class EmpleadoMesero extends Empleado implements Serializable{
-    
+public class EmpleadoMesero extends Empleado implements Serializable {
+
     @Column(name = "codigo_mesero")
     private Long codigoMesero;
-    
-    //@OneToMany(mappedBy = "mesero")
-    //private List<Comanda> comandas;
 
-    public EmpleadoMesero(Long codigoMesero) {
+    @OneToMany(mappedBy = "mesero")
+    private List<Comanda> comandas;
+
+    public EmpleadoMesero() {
+    }
+    
+    public EmpleadoMesero(Long codigoMesero, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String puesto, Long suelto) {
+        super(nombre, apellidoPaterno, apellidoMaterno, telefono, puesto, suelto);
         this.codigoMesero = codigoMesero;
     }
 
@@ -39,5 +44,5 @@ public class EmpleadoMesero extends Empleado implements Serializable{
     public void setCodigoMesero(Long codigoMesero) {
         this.codigoMesero = codigoMesero;
     }
-    
+
 }
