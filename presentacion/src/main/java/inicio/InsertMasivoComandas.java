@@ -130,13 +130,7 @@ public class InsertMasivoComandas {
                     Producto p = productos.get(random.nextInt(productos.size()));
                     int cantidad = 1 + random.nextInt(3);
 
-                    DetalleProducto det = new DetalleProducto(
-                            cantidad,
-                            p.getPrecio(),
-                            "Sin picante",
-                            comanda,
-                            p
-                    );
+                    DetalleProducto det = new DetalleProducto(cantidad,p.getPrecio(),"Sin picante",comanda,p);
 
                     total += det.getSubtotal();
 
