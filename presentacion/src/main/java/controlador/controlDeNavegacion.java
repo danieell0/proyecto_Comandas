@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import pantallas.ClienteFrecuenteFrame;
 import pantallas.ComandasFrame;
 import pantallas.MenuPrincipalFrame;
+import pantallas.MenuReportesFrame;
 import pantallas.ReporteClientesFrame;
 import pantallas.ReportesComandasFrame;
 
@@ -63,7 +64,11 @@ public class controlDeNavegacion {
            panelSuperior pa=new panelSuperior("Reportes Comandas");
            cambiarPantalla(new ReportesComandasFrame(pa, sliede));
     }
-    
+    public void abrirMenuReportes(){
+          Sidebar sliede=new Sidebar();
+           panelSuperior pa=new panelSuperior("Reportes");
+           cambiarPantalla(new MenuReportesFrame(pa, sliede));
+    }
     public void abrirReportesClientes(){
           Sidebar sliede=new Sidebar();
            panelSuperior pa=new panelSuperior("Reportes Clientes");

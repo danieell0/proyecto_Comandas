@@ -125,7 +125,7 @@ public class MenuPrincipalFrame extends JFrame {
                 break;
 
             case "Reportes":
-                nav.abrirFrameBase();
+                nav.abrirMenuReportes();
                 break;
 
             default:
