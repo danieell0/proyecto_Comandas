@@ -60,12 +60,10 @@ public class ReportesComandasFrame extends JFrame {
         JLabel lblRango = new JLabel("Rango fecha");
 
         txtInicio = new JTextField(10);
-        txtInicio.setText("2026-03-01");
 
         JLabel lblHasta = new JLabel("Hasta");
 
         txtFin = new JTextField(10);
-        txtFin.setText("2026-03-31");
 
         panelFiltros.add(lblRango);
         panelFiltros.add(txtInicio);
