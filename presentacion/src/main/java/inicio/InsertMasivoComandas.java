@@ -15,12 +15,16 @@ import entidades.Producto;
 import Enums.EstadoComandas;
 import Enums.EstadoMesa;
 import Enums.EstadoProducto;
+import entidades.DetalleReceta;
+import entidades.Ingrediente;
+import Enums.TipoProducto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.persistence.EntityManager;
+
 
 /**
  *
@@ -32,6 +36,7 @@ public class InsertMasivoComandas {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
         EntityManager em = ConexionBD.crearConexion();
         Random random = new Random();
 
@@ -46,7 +51,6 @@ public class InsertMasivoComandas {
             }
 
             List<EmpleadoMesero> meseros = new ArrayList<>();
-            
             for (int i = 1; i <= 5; i++) {
                 EmpleadoMesero m = new EmpleadoMesero(
                         (long) i,
@@ -62,7 +66,6 @@ public class InsertMasivoComandas {
             }
 
             List<Cliente> clientes = new ArrayList<>();
-
             for (int i = 1; i <= 5; i++) {
                 Cliente c = new Cliente(
                         "Cliente" + i,
@@ -88,16 +91,45 @@ public class InsertMasivoComandas {
             em.persist(cf);
             clientes.add(cf);
 
+            List<Ingrediente> ingredientes = new ArrayList<>();
+
+            String[] nombresIng = {"Pan", "Carne", "Queso", "Lechuga", "Tomate", "Refresco", "Helado"};
+
+            for (int i = 0; i < nombresIng.length; i++) {
+                Ingrediente ing = new Ingrediente(
+                        nombresIng[i],
+                        "unidad",
+                        100.0 
+                );
+                em.persist(ing);
+                ingredientes.add(ing);
+            }
+
             List<Producto> productos = new ArrayList<>();
 
             for (int i = 1; i <= 8; i++) {
+
                 Producto p = new Producto(
                         "Producto" + i,
                         "Desc " + i,
-                        50.0 + random.nextInt(100),
-                        "COMIDA",
+                        50.0 + random.nextInt(100), 
+                        TipoProducto.PLATILLO,
                         EstadoProducto.ACTIVO
                 );
+
+                int numIngredientes = 2 + random.nextInt(3);
+
+                for (int j = 0; j < numIngredientes; j++) {
+
+                    Ingrediente ing = ingredientes.get(random.nextInt(ingredientes.size()));
+
+                    DetalleReceta dr = new DetalleReceta();
+                    dr.setIngrediente(ing);
+                    dr.setCantidadRequerida(1.0 + random.nextInt(3));
+
+                    p.agregarIngrediente(dr);
+                }
+
                 em.persist(p);
                 productos.add(p);
             }
@@ -130,7 +162,13 @@ public class InsertMasivoComandas {
                     Producto p = productos.get(random.nextInt(productos.size()));
                     int cantidad = 1 + random.nextInt(3);
 
-                    DetalleProducto det = new DetalleProducto(cantidad,p.getPrecio(),"Sin picante",comanda,p);
+                    DetalleProducto det = new DetalleProducto(
+                            cantidad,
+                            p.getPrecio(), 
+                            "Sin comentario",
+                            comanda,
+                            p
+                    );
 
                     total += det.getSubtotal();
 
@@ -153,5 +191,5 @@ public class InsertMasivoComandas {
             em.close();
         }
     }
-
 }
+
