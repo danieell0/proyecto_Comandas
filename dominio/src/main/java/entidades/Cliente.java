@@ -6,6 +6,7 @@ package entidades;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -77,6 +79,13 @@ public class Cliente implements Serializable {
     private LocalDate fechaRegistro;
 
     /**
+     * Relación Uno a Muchos con Comanda.
+     * Un cliente puede tener un historial de muchas comandas.
+     */
+    @OneToMany(mappedBy = "cliente")
+    private List<Comanda> comandas;
+    
+    /**
      * Constructor por omision
      */
     public Cliente() {
@@ -100,6 +109,14 @@ public class Cliente implements Serializable {
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
+    }
+
+    public List<Comanda> getComandas() {
+        return comandas;
+    }
+
+    public void setComandas(List<Comanda> comandas) {
+        this.comandas = comandas;
     }
     
     

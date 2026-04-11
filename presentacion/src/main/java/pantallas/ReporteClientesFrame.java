@@ -6,15 +6,21 @@ package pantallas;
 
 import Componentes.Sidebar;
 import Componentes.panelSuperior;
+import controlador.Coordinadoor;
+import controlador.controlDeNavegacion;
+import dto.ReporteClienteDTO;
+import excepciones.NegocioExcepcion;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,7 +33,13 @@ import javax.swing.table.DefaultTableModel;
  * @author Jorge
  */
 public class ReporteClientesFrame extends JFrame {
-
+    
+    private JTextField txtNombre;
+    private JTextField txtVisitas;
+    private DefaultTableModel modelo;
+    private JTextField txtTotal;
+    
+    
     public ReporteClientesFrame(panelSuperior pa, Sidebar sliede) {
         //tamaño del menu 
         sliede.setPreferredSize(new Dimension(0, 0));
@@ -58,12 +70,19 @@ public class ReporteClientesFrame extends JFrame {
         panelFiltros.setOpaque(false);
         //label que dice nombre 
         JLabel lblNombre = new JLabel("Nombre:");
+        
+        
+        
         //creamos un textFiel de tamaño 12
-        JTextField txtNombre = new JTextField(12);
+        txtNombre = new JTextField(12);
         //label que dicie las minimo de visitas
         JLabel lblVisitas = new JLabel("Min visitas:");
         //tectfiel con espacio de 5 para el numero de visitas 
-        JTextField txtVisitas = new JTextField(5);
+        txtVisitas = new JTextField(5);
+        
+        
+        
+        
         //agrego los elementos 
         panelFiltros.add(lblNombre);
         panelFiltros.add(txtNombre);
@@ -99,7 +118,9 @@ public class ReporteClientesFrame extends JFrame {
         //creamos un String con los encabesados de la tabla
         String[] columnas = {"Cliente", "Visitas", "Total Gastado", "Ultima comanda"};
         //le asignamos el modelo
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        
+        modelo = new DefaultTableModel(columnas, 0);
+        
         //creamos una tabla con el modelo 
         JTable tabla = new JTable(modelo);
         //llenamos el alto del scroll
@@ -120,7 +141,7 @@ public class ReporteClientesFrame extends JFrame {
         //cremos un label que dice total 
         JLabel total = new JLabel("Total: ");
         //cremos un textfiel donde aparecera el total
-        JTextField txtTotal = new JTextField(10);
+        txtTotal = new JTextField(10);
         //cremos el paneldonde se almacenara los elementos del total 
         JPanel panelTotal = new JPanel();
         //hacemos que se vea el fondo del panel centro 
@@ -155,8 +176,82 @@ public class ReporteClientesFrame extends JFrame {
         panelInferior.setPreferredSize(new Dimension(0, 65));
         add(panelInferior, BorderLayout.SOUTH);
         
+        // --- 2. EVENTOS DE LOS BOTONES ---
         
-       
-    }
+        // Evento del botón Regresar
+        btnRegresar.addActionListener(e -> {
+            controlDeNavegacion.getcontrolNavegacion().abrirMenuReportes(); 
+        });
 
+        // Evento del botón Filtrar
+        btnFiltrar.addActionListener(e -> cargarTablaReporte());
+        
+        
+        
+        // Cargamos la tabla automáticamente al abrir la pantalla
+        cargarTablaReporte();
+    }
+    
+    /**
+     * Extrae los filtros de la interfaz, solicita los datos al coordinador,
+     * llena la tabla y calcula el total acumulado de todos los clientes filtrados.
+     */
+    private void cargarTablaReporte() {
+        try {
+            // Obtener y limpiar los filtros
+            String nombre = txtNombre.getText().trim();
+            if (nombre.isEmpty()) {
+                nombre = null;
+            }
+
+            Integer minVisitas = null;
+            String visitasStr = txtVisitas.getText().trim();
+            if (!visitasStr.isEmpty()) {
+                minVisitas = Integer.parseInt(visitasStr); 
+            }
+
+            // Pedirle los datos al Coordinador
+            List<ReporteClienteDTO> lista = Coordinadoor.getCoordinador().generarReporteClientes(nombre, minVisitas);
+
+            // Limpiamos la tabla
+            modelo.setRowCount(0); 
+            double sumaTotalGastado = 0.0;
+
+            // Llenamos la tabla y sumamos el total
+            if (lista != null) {
+                for (ReporteClienteDTO dto : lista) {
+                    
+                    String fechaStr = (dto.getFechaUltimaComanda() != null) 
+                            ? dto.getFechaUltimaComanda().toLocalDate().toString() 
+                            : "N/A";
+
+                    Object[] fila = {
+                        dto.getNombreCliente(),
+                        dto.getNumeroVisitas(),
+                        "$" + dto.getTotalGastado(),
+                        fechaStr
+                    };
+                    modelo.addRow(fila);
+
+                    if (dto.getTotalGastado() != null) {
+                        sumaTotalGastado += dto.getTotalGastado();
+                    }
+                }
+            }
+
+            // Mostrar el total global en la cajita
+            txtTotal.setText("$" + String.format("%.2f", sumaTotalGastado));
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "El filtro de 'Min visitas' debe ser un número.", "Dato Inválido", JOptionPane.WARNING_MESSAGE);
+        } catch (NegocioExcepcion ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            ex.printStackTrace(); // Esto pintará las letras rojas en tu consola de NetBeans
+            JOptionPane.showMessageDialog(this, "Error real: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado al cargar la tabla.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+        
 }
+
