@@ -12,9 +12,9 @@ import entidades.DetalleProducto;
 import entidades.EmpleadoMesero;
 import entidades.Mesa;
 import entidades.Producto;
-import enums.EstadoComanda;
-import enums.EstadoMesa;
-import enums.EstadoProducto;
+import Enums.EstadoComandas;
+import Enums.EstadoMesa;
+import Enums.EstadoProducto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public class InsertMasivoComandas {
                         "Desc " + i,
                         50.0 + random.nextInt(100),
                         "COMIDA",
-                        EstadoProducto.ACTIVO
+                        EstadoProducto.DISPONIBLE
                 );
                 em.persist(p);
                 productos.add(p);
@@ -113,7 +113,7 @@ public class InsertMasivoComandas {
                         "OB-20260410-" + folioCount++,
                         LocalDateTime.now(),
                         0.0,
-                        EstadoComanda.Abierta,
+                        EstadoComandas.DISPONIBLE,
                         meseros.get(random.nextInt(meseros.size())),
                         clientes.get(random.nextInt(clientes.size())),
                         mesa

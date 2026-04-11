@@ -4,7 +4,7 @@
  */
 package entidades;
 
-import enums.EstadoMesa;
+import Enums.EstadoMesa;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;

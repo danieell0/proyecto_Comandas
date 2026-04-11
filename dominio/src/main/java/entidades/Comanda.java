@@ -4,7 +4,7 @@
  */
 package entidades;
 
-import enums.EstadoComanda;
+import Enums.EstadoComandas;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,7 +46,7 @@ public class Comanda implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false)
-    private EstadoComanda estado;
+    private EstadoComandas estado;
 
     /**
      * esta es de la relcacion con el mesero de muchos a uno 
@@ -79,7 +79,7 @@ public class Comanda implements Serializable {
     public Comanda() {
     }
 
-    public Comanda(String folio, LocalDateTime fechaHora, Double totalVenta, EstadoComanda estado, EmpleadoMesero mesero, Cliente cliente, Mesa mesa) {
+    public Comanda(String folio, LocalDateTime fechaHora, Double totalVenta, EstadoComandas estado, EmpleadoMesero mesero, Cliente cliente, Mesa mesa) {
         this.folio = folio;
         this.fechaHora = fechaHora;
         this.totalVenta = totalVenta;
@@ -121,11 +121,11 @@ public class Comanda implements Serializable {
         this.totalVenta = totalVenta;
     }
 
-    public EstadoComanda getEstado() {
+    public EstadoComandas getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoComanda estado) {
+    public void setEstado(EstadoComandas estado) {
         this.estado = estado;
     }
 
