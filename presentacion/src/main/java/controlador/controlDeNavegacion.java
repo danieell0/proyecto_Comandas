@@ -25,11 +25,11 @@ public class controlDeNavegacion {
 
     private static controlDeNavegacion controlNavegacion;
     private JFrame frameActual;
-    
+
     public void abrirMenuPrincipal() {
-    Sidebar sidebar = new Sidebar();
-    panelSuperior pa = new panelSuperior("Menú Principal");
-    cambiarPantalla(new MenuPrincipalFrame(sidebar, pa));    
+        Sidebar sidebar = new Sidebar();
+        panelSuperior pa = new panelSuperior("Menú Principal");
+        cambiarPantalla(new MenuPrincipalFrame(sidebar, pa));
     }
 
     public static controlDeNavegacion getcontrolNavegacion() {
@@ -40,12 +40,12 @@ public class controlDeNavegacion {
     }
 
     public void abrirFrameBase() {
-        Sidebar sliede=new Sidebar();
-        formClienteFrecuente form=new formClienteFrecuente();
-        panelSuperior pa=new panelSuperior("Clientes Frecuentes");
-        tablaClientes tabla=new tablaClientes();
-        barraBusqueda barrab=new barraBusqueda();
-        cambiarPantalla(new ClienteFrecuenteFrame(sliede,form,pa,tabla,barrab));
+        Sidebar sliede = new Sidebar();
+        formClienteFrecuente form = new formClienteFrecuente();
+        panelSuperior pa = new panelSuperior("Clientes Frecuentes");
+        tablaClientes tabla = new tablaClientes();
+        barraBusqueda barrab = new barraBusqueda();
+        cambiarPantalla(new ClienteFrecuenteFrame(sliede, form, pa, tabla, barrab));
     }
 
     public void cambiarPantalla(JFrame nuevoFrame) {
@@ -58,27 +58,32 @@ public class controlDeNavegacion {
         nuevoFrame.setVisible(true);
         nuevoFrame.setLocationRelativeTo(null);
     }
-    
-    public void abrirReportesComandas(){
-          Sidebar sliede=new Sidebar();
-           panelSuperior pa=new panelSuperior("Reportes Comandas");
-           cambiarPantalla(new ReportesComandasFrame(pa, sliede));
-    }
-    public void abrirMenuReportes(){
-          Sidebar sliede=new Sidebar();
-           panelSuperior pa=new panelSuperior("Reportes");
-           cambiarPantalla(new MenuReportesFrame(pa, sliede));
-    }
-    public void abrirReportesClientes(){
-          Sidebar sliede=new Sidebar();
-           panelSuperior pa=new panelSuperior("Reportes Clientes");
-           cambiarPantalla(new ReporteClientesFrame(pa, sliede));
-    }
-    public void abrirComandas() {
-    Sidebar sidebar = new Sidebar();
-    panelSuperior pa = new panelSuperior("Comandas");
 
-    cambiarPantalla(new ComandasFrame(sidebar, pa));
-}
+    public void abrirReportesComandas() {
+        Sidebar sliede = new Sidebar();
+        panelSuperior pa = new panelSuperior("Reportes Comandas");
+        cambiarPantalla(new ReportesComandasFrame(pa, sliede));
+    }
+
+    public void abrirMenuReportes() {
+        Sidebar sliede = new Sidebar();
+        panelSuperior pa = new panelSuperior("Reportes");
+        cambiarPantalla(new MenuReportesFrame(pa, sliede));
+    }
+
+    public void abrirReportesClientes() {
+        Sidebar sliede = new Sidebar();
+        panelSuperior pa = new panelSuperior("Reportes Clientes");
+        cambiarPantalla(new ReporteClientesFrame(pa, sliede));
+    }
+
+    public void abrirComandas() {
+        Sidebar sidebar = new Sidebar();
+        panelSuperior pa = new panelSuperior("Comandas");
+
+        cambiarPantalla(new ComandasFrame(sidebar, pa));
+    }
+    
+    
 
 }

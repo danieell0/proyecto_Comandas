@@ -6,12 +6,22 @@ package pantallas;
 
 import Componentes.Sidebar;
 import Componentes.panelSuperior;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import controlador.Coordinadoor;
 import dto.ReporteComandaDTO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.io.FileOutputStream;
 import java.time.LocalDate;
 import java.util.List;
 import javax.swing.Box;
@@ -130,6 +140,11 @@ public class ReportesComandasFrame extends JFrame {
         add(panelInferior, BorderLayout.SOUTH);
 
         btnFiltrar.addActionListener(e -> filtrar());
+
+        btnPDF.addActionListener(e -> {
+            generarPdf();
+        });
+
     }
 
     private void filtrar() {
@@ -166,4 +181,74 @@ public class ReportesComandasFrame extends JFrame {
         }
         lblTotal.setText("Total: $" + total);
     }
+
+    public void generarPdf() {
+        try {
+
+            String rutapdf = System.getProperty("user.home") + "/Downloads/ReporteComandas.pdf";
+            Document document = new Document();
+
+            PdfWriter.getInstance(document, new FileOutputStream(rutapdf));
+            document.open();
+
+            Font tituloFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
+            Paragraph titulo = new Paragraph("Reporte Comandas", tituloFont);
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            document.add(titulo);
+
+            document.add(new Paragraph(" "));
+
+            String fechaInicio;
+            if (txtInicio.getText().isEmpty()) {
+                fechaInicio = "Inicio sin especificar";
+            } else {
+                fechaInicio = txtInicio.getText().trim();
+            }
+
+            String fechaFin;
+            if (txtFin.getText().isBlank()) {
+                fechaFin = "Fin si especificar";
+            } else {
+                fechaFin = txtFin.getText().trim();
+            }
+
+            document.add(new Paragraph("Periodo: " + fechaInicio + " hasta " + fechaFin));
+            document.add(new Paragraph(" "));
+
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            int columnas = modelo.getColumnCount();
+            PdfPTable tabla = new PdfPTable(columnas);
+            tabla.setWidthPercentage(100);
+
+            for (int i = 0; i < columnas; i++) {
+                PdfPCell header = new PdfPCell(new Phrase(modelo.getColumnName(i)));
+                header.setHorizontalAlignment(Element.ALIGN_CENTER);
+                header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                tabla.addCell(header);
+            }
+
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                for (int j = 0; j < columnas; j++) {
+                    Object valor = modelo.getValueAt(i, j);
+                    tabla.addCell(valor != null ? valor.toString() : "");
+                }
+            }
+
+            document.add(tabla);
+
+            Font totalFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+            Paragraph total = new Paragraph(lblTotal.getText(), totalFont);
+            total.setAlignment(Element.ALIGN_RIGHT);
+            document.add(total);
+            
+            document.close();
+
+            JOptionPane.showMessageDialog(this, "Pdf generado correctamente en Descargas.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al generar elo PDF: " + e.getMessage());
+        }
+    }
+
 }
