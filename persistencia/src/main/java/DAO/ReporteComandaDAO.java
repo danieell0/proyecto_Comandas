@@ -45,7 +45,7 @@ public class ReporteComandaDAO implements IReporteComandaDAO{
             if (c.getCliente() != null) {
                 nombreCliente = c.getCliente().getNombre();
             } else {
-                nombreCliente = "Sin cliente";
+                nombreCliente = "No cliente";
             }
             ReporteComandaDTO dto = new ReporteComandaDTO(
                     c.getFechaHora().toLocalDate(),

@@ -5,13 +5,17 @@
 package controlador;
 
 import dto.ClienteDTO;
+import dto.ReporteComandaDTO;
 import entidades.ClienteFrecuente;
 import excepciones.NegocioExcepcion;
 import excepciones.PersistenciaException;
+import java.time.LocalDate;
 import java.util.List;
 import javax.swing.JOptionPane;
 import objetosNegocio.ClienteBO;
+import objetosNegocio.ReportesComandasBO;
 import pantallas.ClienteFrecuenteFrame;
+import pantallas.ReportesComandasFrame;
 
 /**
  *
@@ -39,12 +43,16 @@ public class Coordinadoor {
      */
     private ClienteFrecuenteFrame frameCliente;
 
+    private ReportesComandasBO reportesComandas;
+    
+    private ReportesComandasFrame frameReportesComandas;
     /**
      * Constructor privado para evitar que otras clases usen "new Coordinadoor()".
      * Fuerza el uso del método getCoordinador() para aplicar el patrón Singleton.
      */
     private Coordinadoor() {
         clienteBO = new ClienteBO();
+        reportesComandas = new ReportesComandasBO();
     }
 
     /**
@@ -113,5 +121,14 @@ public class Coordinadoor {
      */
     public void eliminarClientes(Long idCliente) throws NegocioExcepcion {
         clienteBO.eliminar(idCliente);
+    }
+    
+    public List<ReporteComandaDTO> obtenerReporteComandas(LocalDate fechaInicio, LocalDate fechaFin) {
+        try {
+            return reportesComandas.obtenerReporteComandas(fechaInicio, fechaFin);
+        } catch (NegocioExcepcion e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+            return null;
+        }
     }
 }

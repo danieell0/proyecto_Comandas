@@ -22,7 +22,6 @@ public class ReportesComandasBO implements IReporteComandasBO{
     
     @Override
     public List<ReporteComandaDTO> obtenerReporteComandas(LocalDate fechaInicio, LocalDate fechaFin) throws NegocioExcepcion {
-
         try {
             validarFechas(fechaInicio, fechaFin);
             return reporteDAO.obtenerReporteComandas(fechaInicio, fechaFin);
