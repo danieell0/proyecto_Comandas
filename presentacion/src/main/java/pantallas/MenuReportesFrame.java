@@ -4,6 +4,7 @@
  */
 package pantallas;
 
+import controlador.controlDeNavegacion;
 import Componentes.Sidebar;
 import Componentes.panelSuperior;
 import java.awt.BorderLayout;
@@ -92,7 +93,16 @@ public class MenuReportesFrame extends JFrame {
             sliede.revalidate();
             sliede.repaint();
         });
-
+        
+        //Action listeners de los dos botones principales
+        btnClientes.addActionListener(e -> {
+            controlDeNavegacion.getcontrolNavegacion().abrirReportesClientes();
+        });
+        
+        btnComandas.addActionListener(e -> {
+            controlDeNavegacion.getcontrolNavegacion().abrirReportesComandas();
+        });
+        
     }
-
+    
 }

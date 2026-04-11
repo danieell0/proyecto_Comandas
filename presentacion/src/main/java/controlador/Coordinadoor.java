@@ -5,12 +5,14 @@
 package controlador;
 
 import dto.ClienteDTO;
+import dto.ReporteClienteDTO;
 import entidades.ClienteFrecuente;
 import excepciones.NegocioExcepcion;
 import excepciones.PersistenciaException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import objetosNegocio.ClienteBO;
+import objetosNegocio.ReportesBO;
 import pantallas.ClienteFrecuenteFrame;
 
 /**
@@ -33,7 +35,12 @@ public class Coordinadoor {
      * Objeto de negocio que contiene toda la lógica y reglas de validación.
      */
     private ClienteBO clienteBO;
-
+    
+    /**
+     * Objeto de negocio que contiene toda la logica para la generacion de reportes
+     */
+    private ReportesBO reportesBO;
+    
     /**
      * Referencia a la pantalla principal del módulo de clientes.
      */
@@ -45,6 +52,7 @@ public class Coordinadoor {
      */
     private Coordinadoor() {
         clienteBO = new ClienteBO();
+        reportesBO = new ReportesBO();
     }
 
     /**
@@ -113,5 +121,16 @@ public class Coordinadoor {
      */
     public void eliminarClientes(Long idCliente) throws NegocioExcepcion {
         clienteBO.eliminar(idCliente);
+    }
+    
+    /**
+     * Solicita la generación del reporte de clientes frecuentes aplicando filtros.
+     * @param nombre Filtro por nombre (puede ser vacío o null).
+     * @param minVisitas Filtro de visitas mínimas (puede ser null).
+     * @return Lista de clientes que cumplen los criterios para el reporte.
+     * @throws NegocioExcepcion Si falla la recuperación de datos o hay errores de validación.
+     */
+    public List<ReporteClienteDTO> generarReporteClientes(String nombre, Integer minVisitas) throws NegocioExcepcion {
+        return reportesBO.obtenerReporteClientes(nombre, minVisitas);
     }
 }

@@ -27,7 +27,7 @@ public class ReportesClienteDAO implements IReportesClienteDAO {
          EntityManager em = ConexionBD.crearConexion();
         try {
              String jpql="""
-                    SELECT new dtos.dto.ReporteClienteDTO(c.nombre, COUNT(q.id), SUM(q.total), MAX(q.fecha))
+                    SELECT new dto.ReporteClienteDTO(c.nombre, COUNT(q.id), SUM(q.totalVenta), MAX(q.fechaHora))
                     FROM Cliente c
                     JOIN c.comandas q
                     WHERE (:nombre IS NULL OR c.nombre LIKE :nombre)
@@ -50,7 +50,9 @@ public class ReportesClienteDAO implements IReportesClienteDAO {
         }
         return query.getResultList();
         } catch (Exception e) {
-            throw new PersistenciaException("Error al obtener el reporte de clientes");
+            e.printStackTrace();
+            throw new PersistenciaException("Error al obtener el reporte de clientes: " + e.getMessage());
+            //throw new PersistenciaException("Error al obtener el reporte de clientes");
         }finally{
             em.close();
         }
