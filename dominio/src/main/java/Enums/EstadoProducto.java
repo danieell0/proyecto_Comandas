@@ -9,5 +9,5 @@ package Enums;
  * @author munos
  */
 public enum EstadoProducto {
-   DISPONIBLE 
+    ACTIVO, INACTIVO 
 }

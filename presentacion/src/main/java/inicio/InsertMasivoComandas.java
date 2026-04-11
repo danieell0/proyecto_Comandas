@@ -96,7 +96,7 @@ public class InsertMasivoComandas {
                         "Desc " + i,
                         50.0 + random.nextInt(100),
                         "COMIDA",
-                        EstadoProducto.DISPONIBLE
+                        EstadoProducto.ACTIVO
                 );
                 em.persist(p);
                 productos.add(p);
