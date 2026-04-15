@@ -52,6 +52,7 @@ import javax.swing.table.DefaultTableModel;
 public class AgregarProductoFrame extends JFrame {
 
     private String rutaImagenSeleccionada;
+    private JTextArea txtDescripcion;
 
     public AgregarProductoFrame(panelSuperior pa, Sidebar sliede) {
         //agrego el titulo en frame 
@@ -101,7 +102,7 @@ public class AgregarProductoFrame extends JFrame {
         gbc.weightx = 1;
         gbc.weighty = 0.2;
         gbc.fill = GridBagConstraints.BOTH;
-        JTextArea txtDescripcion = new JTextArea();
+        txtDescripcion = new JTextArea();
         txtDescripcion.setLineWrap(true);
         txtDescripcion.setWrapStyleWord(true);
         JScrollPane scrollDescripcion = new JScrollPane(txtDescripcion);
@@ -149,7 +150,7 @@ public class AgregarProductoFrame extends JFrame {
             if (resultado == JFileChooser.APPROVE_OPTION) {
                 File archivo = filechoser.getSelectedFile();
 
-                rutaImagenSeleccionada = archivo.getAbsolutePath();
+                rutaImagenSeleccionada = guardarImagen(archivo);
                 System.out.println("Ruta seleccionada" + rutaImagenSeleccionada);
             }
         });

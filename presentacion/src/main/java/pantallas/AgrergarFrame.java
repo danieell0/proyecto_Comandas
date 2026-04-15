@@ -145,7 +145,7 @@ public class AgrergarFrame extends JFrame {
                         String Nombre = modelo.getValueAt(i, 2).toString();
                         Object valor = modelo.getValueAt(i, 3);
                         if (valor != null && !valor.toString().isEmpty()) {
-                            Integer cantidad = Integer.valueOf(valor.toString());
+                            Double cantidad=Double.valueOf(valor.toString());
                             if (cantidad > 0) {
                                 lista.add(new IngredienteSeleccionadoDTO(id, Nombre, cantidad));
                             }
@@ -188,7 +188,7 @@ public class AgrergarFrame extends JFrame {
                 x.getId(),
                 false,
                 x.getNombre(),
-                0
+                0.0
             });
         }
     }
