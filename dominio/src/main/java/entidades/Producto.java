@@ -60,8 +60,11 @@ public class Producto implements Serializable {
      * ingredientes (receta). cascade = CascadeType.ALL significa que si
      * guardas/borras el Producto, se guardan/borran sus Detalles.
      */
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private List<DetalleReceta> receta = new ArrayList<>();
+
+    @OneToMany(mappedBy = "producto",cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<DetalleProducto> detalles = new ArrayList<>();
 
     public Producto() {
     }
@@ -78,7 +81,7 @@ public class Producto implements Serializable {
         receta.add(detalle);
         detalle.setProducto(this);
     }
-    
+
     public void eliminarIngrediente(DetalleReceta detalle) {
         receta.remove(detalle);
         detalle.setProducto(null);
@@ -147,5 +150,5 @@ public class Producto implements Serializable {
     public void setReceta(List<DetalleReceta> receta) {
         this.receta = receta;
     }
-    
+
 }

@@ -117,7 +117,7 @@ public class MenuPrincipalFrame extends JFrame {
                 break;
 
             case "Productos":
-                nav.abrirFrameBase();
+                nav.abrirProductos();
                 break;
 
             case "Ingredientes":

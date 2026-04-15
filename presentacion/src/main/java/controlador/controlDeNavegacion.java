@@ -9,11 +9,15 @@ import Componentes.barraBusqueda;
 import Componentes.formClienteFrecuente;
 import Componentes.panelSuperior;
 import Componentes.tablaClientes;
+import Enums.TipoAgregar;
 import javax.swing.JFrame;
+import pantallas.AgregarProductoFrame;
+import pantallas.AgrergarFrame;
 import pantallas.ClienteFrecuenteFrame;
 import pantallas.ComandasFrame;
 import pantallas.MenuPrincipalFrame;
 import pantallas.MenuReportesFrame;
+import pantallas.ProductosFrames;
 import pantallas.ReporteClientesFrame;
 import pantallas.ReportesComandasFrame;
 
@@ -80,10 +84,25 @@ public class controlDeNavegacion {
     public void abrirComandas() {
         Sidebar sidebar = new Sidebar();
         panelSuperior pa = new panelSuperior("Comandas");
-
         cambiarPantalla(new ComandasFrame(sidebar, pa));
     }
-    
-    
+
+    public void abrirProductos() {
+        Sidebar sidebar = new Sidebar();
+        panelSuperior pa = new panelSuperior("Productos");
+        cambiarPantalla(new ProductosFrames(pa, sidebar));
+    }
+
+    public void abrirAgregarProductos() {
+        Sidebar sidebar = new Sidebar();
+        panelSuperior pa = new panelSuperior("Agregar Producto");
+        cambiarPantalla(new AgregarProductoFrame(pa, sidebar));
+    }
+
+    public void abrirAgregarGenerico(String titulo, TipoAgregar tipo) {
+        AgrergarFrame frame = new AgrergarFrame(titulo,tipo);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
 
 }
