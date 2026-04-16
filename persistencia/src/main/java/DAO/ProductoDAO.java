@@ -8,6 +8,7 @@ import Enums.EstadoProducto;
 import Enums.TipoProducto;
 import InterfacesDAO.IProductoDAO;
 import conexion.ConexionBD;
+import entidades.DetalleReceta;
 import entidades.Producto;
 import excepciones.PersistenciaException;
 import java.util.List;
@@ -71,7 +72,7 @@ public class ProductoDAO implements IProductoDAO {
             em.getTransaction().begin();
             em.persist(producto);
             em.getTransaction().commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
@@ -90,7 +91,27 @@ public class ProductoDAO implements IProductoDAO {
                 throw new PersistenciaException("Error, el producto o su id no puede estar vacio.");
             }
             em.getTransaction().begin();
-            em.merge(producto);
+
+            Producto productobd = em.find(Producto.class, producto.getId());
+
+            if (productobd == null) {
+                throw new PersistenciaException("Producto no encontrado.");
+            }
+            productobd.setDescripcion(producto.getDescripcion());
+            productobd.setPrecio(producto.getPrecio());
+            productobd.setEstado(producto.getEstado());
+            productobd.getReceta().clear();
+
+            for (DetalleReceta x : producto.getReceta()) {
+                DetalleReceta nueva = new DetalleReceta();
+                nueva.setProducto(productobd);
+                nueva.setIngrediente(x.getIngrediente());
+                nueva.setCantidadRequerida(x.getCantidadRequerida());
+
+                productobd.getReceta().add(nueva);
+            }
+
+            em.merge(productobd);
             em.getTransaction().commit();
         } catch (PersistenciaException q) {
             throw q;
@@ -164,13 +185,13 @@ public class ProductoDAO implements IProductoDAO {
             if (producto == null) {
                 throw new PersistenciaException("El producto no existe");
             }
-            
+
             em.getTransaction().begin();
             String comandoJPQL = "DELETE FROM DetalleProducto d WHERE d.producto.id =:id";
             Query query = em.createQuery(comandoJPQL);
             query.setParameter("id", id);
             query.executeUpdate();
-            
+
             em.remove(producto);
             em.getTransaction().commit();
         } catch (PersistenciaException q) {

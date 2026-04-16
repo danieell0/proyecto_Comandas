@@ -236,7 +236,7 @@ public class Coordinadoor {
             return null;
         }
     }
-    
+
     public void setIngredientesSeleccionados(List<IngredienteSeleccionadoDTO> lista) {
         this.ingredientesSeleccionados = lista;
     }
@@ -244,13 +244,30 @@ public class Coordinadoor {
     public List<IngredienteSeleccionadoDTO> getIngredientesSeleccionados() {
         return ingredientesSeleccionados;
     }
-    
-    public void guardarProducto(ProductoDTO producto) throws NegocioExcepcion{
+
+    public void guardarProducto(ProductoDTO producto) throws NegocioExcepcion {
         try {
             productoBO.guardarProducto(producto);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
+
+    public ProductoDTO obtenerProductoPorId(Long id) throws NegocioExcepcion {
+        try {
+            return productoBO.obtenerProductoPorId(id);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return null;
+        }
+    }
     
+    public void actualizarProducto(ProductoDTO productoDTO)throws NegocioExcepcion{
+        try {
+            productoBO.actualizarProducto(productoDTO);
+        } catch (NegocioExcepcion e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
 }

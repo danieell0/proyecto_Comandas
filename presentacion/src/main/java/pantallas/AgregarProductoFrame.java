@@ -205,6 +205,7 @@ public class AgregarProductoFrame extends JFrame {
 
             try {
                 Coordinadoor.getCoordinador().guardarProducto(producto);
+                controlDeNavegacion.getcontrolNavegacion().abrirProductos();
             } catch (NegocioExcepcion ex) {
                 JOptionPane.showMessageDialog(this, "Error al guardar el producto" + ex.getMessage());
             }
