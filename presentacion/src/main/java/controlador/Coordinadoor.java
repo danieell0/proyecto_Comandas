@@ -246,11 +246,7 @@ public class Coordinadoor {
     }
 
     public void guardarProducto(ProductoDTO producto) throws NegocioExcepcion {
-        try {
-            productoBO.guardarProducto(producto);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
+        productoBO.guardarProducto(producto);
     }
 
     public ProductoDTO obtenerProductoPorId(Long id) throws NegocioExcepcion {
@@ -261,8 +257,8 @@ public class Coordinadoor {
             return null;
         }
     }
-    
-    public void actualizarProducto(ProductoDTO productoDTO)throws NegocioExcepcion{
+
+    public void actualizarProducto(ProductoDTO productoDTO) throws NegocioExcepcion {
         try {
             productoBO.actualizarProducto(productoDTO);
         } catch (NegocioExcepcion e) {

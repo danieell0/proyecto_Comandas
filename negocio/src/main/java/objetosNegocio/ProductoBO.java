@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import validadores.ValidarCamposProductos;
 
 /**
  *
@@ -64,12 +65,13 @@ public class ProductoBO implements IProductoBO {
     @Override
     public void guardarProducto(ProductoDTO dto) throws NegocioExcepcion {
         try {
-            if (dto == null) {
-                throw new NegocioExcepcion("Error, el producto en la BO es nulo");
+            validarDatos(dto);
+            if (productoDAO.existeProductoNombre(dto.getNombre())) {
+                throw new NegocioExcepcion("Ya existe un producto con ese nombre");
             }
+            validarDatos(dto);
             Producto pro = ProductoMapper.toEntity(dto);
             productoDAO.guardarProducto(pro);
-            logger.info("Producto guardado correctamente");
         } catch (PersistenciaException e) {
             logger.log(Level.SEVERE, "Error al guardar el producto en la BO", e);
             throw new NegocioExcepcion("Error al guardar el producto en la BO", e);
@@ -79,9 +81,7 @@ public class ProductoBO implements IProductoBO {
     @Override
     public void actualizarProducto(ProductoDTO dto) throws NegocioExcepcion {
         try {
-            if (dto == null) {
-                throw new NegocioExcepcion("El producto no puede ser nulo");
-            }
+            validarDatos(dto);
             Producto producto = ProductoMapper.toEntity(dto);
             productoDAO.actualizarProducto(producto);
             logger.info("Producto actualizado correctamente");
@@ -148,4 +148,41 @@ public class ProductoBO implements IProductoBO {
             throw new NegocioExcepcion("Error al eliminar el producto", e);
         }
     }
+
+    public void validarDatos(ProductoDTO producto) throws NegocioExcepcion {
+
+        if (producto == null) {
+            throw new NegocioExcepcion("El producto no puede estar nulo");
+        }
+
+        if (producto.getNombre() == null || producto.getNombre().trim().isEmpty()) {
+            throw new NegocioExcepcion("El nombre es obligatorio");
+        }
+
+        if (!ValidarCamposProductos.nombre(producto.getNombre())) {
+            throw new NegocioExcepcion("Nombre invalido");
+        }
+
+        if (producto.getDescripcion() == null || producto.getDescripcion().trim().isEmpty()) {
+            throw new NegocioExcepcion("La descripcion es obligatoria");
+        }
+
+        if (!ValidarCamposProductos.descripcion(producto.getDescripcion())) {
+            throw new NegocioExcepcion("Descripcion invalida");
+        }
+
+        if (!ValidarCamposProductos.precio(producto.getPrecio())) {
+            throw new NegocioExcepcion("Precion invalido");
+        }
+
+        if (producto.getTipo() == null) {
+            throw new NegocioExcepcion("Debe seleccionar una categoría");
+        }
+
+        if (producto.getReceta() == null || producto.getReceta().isEmpty()) {
+            throw new NegocioExcepcion("Debe agregar al menos un ingrediente");
+        }
+
+    }
+
 }

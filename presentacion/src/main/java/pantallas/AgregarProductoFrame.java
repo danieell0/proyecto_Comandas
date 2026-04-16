@@ -62,7 +62,7 @@ public class AgregarProductoFrame extends JFrame {
         //hacemos que aparesca el frame en el centro
         setLocationRelativeTo(null);
         //hacemos que se cierre el frame al darle close
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         //le agrego un borderlayout 
         setLayout(new BorderLayout());
 
@@ -205,9 +205,11 @@ public class AgregarProductoFrame extends JFrame {
 
             try {
                 Coordinadoor.getCoordinador().guardarProducto(producto);
+                JOptionPane.showMessageDialog(this, "Producto guardado correctamente");
                 controlDeNavegacion.getcontrolNavegacion().abrirProductos();
             } catch (NegocioExcepcion ex) {
                 JOptionPane.showMessageDialog(this, "Error al guardar el producto" + ex.getMessage());
+                return;
             }
 
         });

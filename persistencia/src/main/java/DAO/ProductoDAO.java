@@ -207,4 +207,21 @@ public class ProductoDAO implements IProductoDAO {
         }
     }
 
+    @Override
+    public boolean existeProductoNombre(String nombre) throws PersistenciaException {
+        EntityManager em = ConexionBD.crearConexion();
+        try {
+            String jpql = "SELECT COUNT(p) FROM Producto p WHERE p.nombre = :nombre";
+            TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+            query.setParameter("nombre", nombre);
+            Long count = query.getSingleResult();
+            return count > 0;
+        } catch (Exception e) {
+            logger.log(Level.SEVERE,"Error al validar si existe el nombre", e);
+            throw new PersistenciaException("Error al validar si existe el nombre", e);
+        } finally {
+            em.close();
+        }
+    }
+
 }

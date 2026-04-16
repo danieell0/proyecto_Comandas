@@ -25,5 +25,7 @@ public interface IProductoDAO {
     public void eliminarProducto(Long id) throws PersistenciaException;
     
     public List<Producto> filtrarProductos(String nombre, String categoria, String estado) throws PersistenciaException;
+    
+    public boolean existeProductoNombre(String nombre)throws PersistenciaException;
 
 }
