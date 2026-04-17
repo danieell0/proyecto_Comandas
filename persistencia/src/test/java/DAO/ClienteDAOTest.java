@@ -200,5 +200,5 @@ public class ClienteDAOTest {
 //        // 2. Validar: Tu código dice que si no lo encuentra, retorna false. ¡Validémoslo!
 //        assertFalse(resultado, "Debería retornar false al intentar eliminar un ID que no existe");
 //    }
-//    
+    
 }

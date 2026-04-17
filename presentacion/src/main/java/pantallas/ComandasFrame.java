@@ -280,6 +280,7 @@ public class ComandasFrame extends JFrame {
         try {
             coordinador.crearComanda(dto);
             JOptionPane.showMessageDialog(this, "Comanda guardada");
+            
         } catch (NegocioExcepcion e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }

@@ -79,7 +79,7 @@ public class Sidebar extends JPanel {
                 nav.abrirMenuPrincipal();
                 break;
             case "Comandas":
-                nav.abrirComandas();
+                nav.abrirMesasFrame();
                 break;
             case "Productos":
                 nav.abrirProductos();

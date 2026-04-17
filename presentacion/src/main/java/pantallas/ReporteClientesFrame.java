@@ -44,6 +44,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ReporteClientesFrame extends JFrame {
 
+    private boolean menuVisible = false;
+    
     private JTextField txtNombre;
     private JTextField txtVisitas;
     private DefaultTableModel modelo;
@@ -193,6 +195,19 @@ public class ReporteClientesFrame extends JFrame {
 
         btnPdf.addActionListener(e -> {
             GenerarPDF();
+        });
+        
+        //agrego el action listener del boton del menu 
+        pa.getBtnMenu().addActionListener(e -> {
+            if (menuVisible) {
+                sliede.setPreferredSize(new Dimension(0, 0));
+            } else {
+                sliede.setPreferredSize(new Dimension(200, 0));
+            }
+            menuVisible = !menuVisible;
+
+            sliede.revalidate();
+            sliede.repaint();
         });
 
     }

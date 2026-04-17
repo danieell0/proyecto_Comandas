@@ -52,12 +52,17 @@ public class ReportesComandasFrame extends JFrame {
     private JLabel lblTotal;
 
     public ReportesComandasFrame(panelSuperior pa, Sidebar sliede) {
+        //tamaño del menu 
         sliede.setPreferredSize(new Dimension(0, 0));
+        //titulo del panell
         setTitle("Reportes Comandas");
+        //tamaño
         setSize(1200, 600);
+        //cerramos el frame 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //le agregamos el border layout
         setLayout(new BorderLayout());
-
+        //agregamos elementos 
         add(pa, BorderLayout.NORTH);
         add(sliede, BorderLayout.WEST);
 
@@ -154,14 +159,15 @@ public class ReportesComandasFrame extends JFrame {
             this.dispose(); 
         });
 
-        // 2. Action Listener para el botón del menú de hamburguesa
+        //agrego el action listener del boton del menu 
         pa.getBtnMenu().addActionListener(e -> {
             if (menuVisible) {
                 sliede.setPreferredSize(new Dimension(0, 0));
             } else {
-                sliede.setPreferredSize(new Dimension(200, 0)); 
+                sliede.setPreferredSize(new Dimension(200, 0));
             }
             menuVisible = !menuVisible;
+
             sliede.revalidate();
             sliede.repaint();
         });
