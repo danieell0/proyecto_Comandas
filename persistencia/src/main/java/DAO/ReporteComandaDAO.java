@@ -22,9 +22,17 @@ import javax.persistence.TypedQuery;
  */
 public class ReporteComandaDAO implements IReporteComandaDAO{
 
+    /**
+     * Metodo 
+     * @param fechaInicio
+     * @param fechaFin
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<ReporteComandaDTO> obtenerReporteComandas(LocalDate fechaInicio, LocalDate fechaFin) throws PersistenciaException{
                 
+    //entity manager para la conexion con la base de datos
     EntityManager em = ConexionBD.crearConexion();
 
     try {

@@ -11,12 +11,19 @@ import entidades.Ingrediente;
 import entidades.Producto;
 
 /**
- *
- * @author Jorge
+ * Clase utilitaria encargada de mapear (convertir) objetos de la entidad {@link Producto}
+ * a su correspondiente Data Transfer Object {@link ProductoDTO} y viceversa.
+ * * Además de trasladar los atributos básicos, esta clase maneja la lógica de conversión 
+ * para la receta del producto, enlazando los ingredientes seleccionados con sus detalles.
  */
 public class ProductoMapper {
 
-    //convierte de entidad a dto
+    /**
+     * Convierte una entidad {@link Producto} proveniente de la base de datos 
+     * en un objeto {@link ProductoDTO} para su uso seguro en la capa de presentación.
+     * * @param p El objeto de tipo entidad Producto que se desea convertir.
+     * @return Un nuevo objeto ProductoDTO con los datos mapeados, o {@code null} si la entidad de entrada es nula.
+     */
     public static ProductoDTO toDTO(Producto p) {
         if (p == null) {
             return null;
@@ -31,7 +38,15 @@ public class ProductoMapper {
         return dto;
     }
 
-    //convierte de dto a entidad
+    /**
+     * Convierte un Data Transfer Object {@link ProductoDTO} proveniente de la vista 
+     * en una entidad {@link Producto} lista para ser guardada o procesada por JPA.
+     * * Este método también inspecciona la lista de ingredientes seleccionados (la receta). 
+     * Si contiene elementos, crea los objetos {@link DetalleReceta} y los asocia 
+     * automáticamente a la entidad del producto resultante.
+     * * @param dto El objeto de transferencia de datos que contiene la información capturada.
+     * @return Una nueva entidad Producto con los datos básicos y su receta construida, o {@code null} si el DTO es nulo.
+     */
     public static Producto toEntity(ProductoDTO dto) {
         if (dto == null) {
             return null;

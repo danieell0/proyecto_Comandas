@@ -172,6 +172,11 @@ public class IngredienteDAO implements IIngredienteDAO{
     }
     private static final Logger logger = Logger.getLogger(IngredienteDAO.class.getName());
 
+    /**
+     * Metodo para obtener todos los ingredientes de la base de datos
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<Ingrediente> obtenerIngredientes() throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();
@@ -189,6 +194,12 @@ public class IngredienteDAO implements IIngredienteDAO{
         }
     }
 
+    /**
+     * Metodo para buscar nombre que devuelve la lista de Ingredientes en base al nombre proporcionado
+     * @param nombre
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<Ingrediente> buscarPorNombre(String nombre) throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();

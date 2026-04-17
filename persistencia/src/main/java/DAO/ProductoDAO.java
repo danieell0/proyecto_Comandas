@@ -26,6 +26,11 @@ public class ProductoDAO implements IProductoDAO {
 
     private static final Logger logger = Logger.getLogger(ProductoDAO.class.getName());
 
+    /**
+     * Metodo que regresa todos los productos en una lista desde la base de datos
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<Producto> obtenerProductos() throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();
@@ -43,6 +48,12 @@ public class ProductoDAO implements IProductoDAO {
         }
     }
 
+    /**
+     * Metodo que devuelve un producto en base a su ID
+     * @param id
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public Producto obtenerProductoPorId(Long id) throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();
@@ -65,6 +76,11 @@ public class ProductoDAO implements IProductoDAO {
         }
     }
 
+    /**
+     * Metodo que guarda un producto en la base de datos
+     * @param producto
+     * @throws PersistenciaException 
+     */
     @Override
     public void guardarProducto(Producto producto) throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();
@@ -83,6 +99,12 @@ public class ProductoDAO implements IProductoDAO {
         }
     }
 
+    /**
+     * Metodo que actualiza un producto en la base de datos en base a los nuevos atributos 
+     * del nuevo objeto producto
+     * @param producto
+     * @throws PersistenciaException 
+     */
     @Override
     public void actualizarProducto(Producto producto) throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();
@@ -126,6 +148,16 @@ public class ProductoDAO implements IProductoDAO {
         }
     }
 
+    /**
+     * Metodo que filtra productos en base a una cadena y regresa una lissta de 
+     * los productos que coincidan
+     * 
+     * @param nombre
+     * @param categoria
+     * @param estado
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<Producto> filtrarProductos(String nombre, String categoria, String estado) throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();
@@ -174,6 +206,12 @@ public class ProductoDAO implements IProductoDAO {
 
     }
 
+    /**
+     * Metodo que elimina un producto de la base de datos y lanza una excepcion 
+     * en el caso de que no sea posible
+     * @param id
+     * @throws PersistenciaException 
+     */
     @Override
     public void eliminarProducto(Long id) throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();
@@ -207,6 +245,13 @@ public class ProductoDAO implements IProductoDAO {
         }
     }
 
+    /**
+     * metodo que verifica si existe un producto en la base de datos , regresa true
+     * en caso de que exista, false en caso contrario
+     * @param nombre
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public boolean existeProductoNombre(String nombre) throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();

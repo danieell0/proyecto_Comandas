@@ -127,8 +127,8 @@ public class SeleccionRolFrame extends JFrame{
                     // AQUÍ ABRIMOS LA PANTALLA DE TRABAJO DEL MESERO
                     // (Sustituye 'PantallaComandas' por el nombre real de tu JFrame de mesas/comandas)
                     // new PantallaComandas().setVisible(true); 
-                    
-                    this.dispose(); // Cerramos la ventanita de login
+                    controlDeNavegacion.getcontrolNavegacion().abrirComandas();
+                    this.dispose(); // Cerrameos la ventanita de login
                     
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(this, "Por favor, ingrese solo números.", "Error", JOptionPane.ERROR_MESSAGE);

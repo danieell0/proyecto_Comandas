@@ -5,7 +5,7 @@
 package validadores;
 
 /**
- *
+ * Clase que utiliza herramientas de expresiones regulares para validaciones
  * @author Jorge
  */
 public class ValidarCamposProductos {

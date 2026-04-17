@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface IReportesClienteDAO {
 
+    // metodo que obtiene todos los reportes de clientes
     List<ReporteClienteDTO> obtenerReporteClientes(String nombre, Integer minVisitas) throws PersistenciaException;
 
 }

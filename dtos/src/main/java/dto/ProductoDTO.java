@@ -9,7 +9,7 @@ import Enums.TipoProducto;
 import java.util.List;
 
 /**
- *
+ * Clase de data transfer object para representar un objeto do
  * @author Jorge
  */
 public class ProductoDTO {

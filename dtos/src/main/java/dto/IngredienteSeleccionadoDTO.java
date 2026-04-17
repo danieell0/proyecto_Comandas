@@ -5,7 +5,7 @@
 package dto;
 
 /**
- *
+ * Clase data transfer object para representar a un ingrediente 
  * @author Jorge
  */
 public class IngredienteSeleccionadoDTO {

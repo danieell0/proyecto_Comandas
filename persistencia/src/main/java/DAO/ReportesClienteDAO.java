@@ -20,7 +20,13 @@ import javax.persistence.TypedQuery;
 public class ReportesClienteDAO implements IReportesClienteDAO {
 
     
-    
+    /**
+     * Metodo para obtener reportes de los clientes en la bd usando un dto
+     * @param nombre
+     * @param minVisitas
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<ReporteClienteDTO> obtenerReporteClientes(String nombre, Integer minVisitas) throws PersistenciaException {
         
