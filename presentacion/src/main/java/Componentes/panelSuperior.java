@@ -71,5 +71,5 @@ public class panelSuperior extends JPanel {
     public JButton getBtnMenu() {
         return btnMenu;
     }
-
+    
 }

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,11 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 /**
@@ -63,7 +69,7 @@ public class Cliente implements Serializable {
     /**
      * Telefono del cliente
      */
-    @Column(name = "telefono", length = 20, nullable = false)
+    @Column(name = "telefono", length = 255, nullable = false)
     private String telefono;
 
     /**
@@ -177,4 +183,43 @@ public class Cliente implements Serializable {
         this.correoElectronico = correoElectronico;
     }
 
+    
+    // --- EVENTOS NATIVOS DE SEGURIDAD (PLAN B) por que el convertidor no quiso servir---
+
+    /**
+     * Este evento se dispara automáticamente una fracción de segundo 
+     * ANTES de hacer un INSERT o UPDATE en la base de datos.
+     */
+    @PrePersist
+    @PreUpdate
+    public void encriptarDatos() {
+        // Solo encriptamos si el teléfono no es nulo y NO parece estar ya encriptado
+        // (Un texto AES en Base64 suele terminar en == o ser muy largo)
+        if (this.telefono != null && !this.telefono.trim().isEmpty() && this.telefono.length() < 30) {
+            try {
+                this.telefono = entidades.EncriptadorAES.encriptar(this.telefono);
+            } catch (Exception e) {
+                System.err.println("Error encriptando: " + e.getMessage());
+            }
+        }
+    }
+
+    @PostLoad
+    @PostPersist
+    @PostUpdate
+    public void desencriptarDatos() {
+        if (this.telefono != null && !this.telefono.trim().isEmpty()) {
+            try {
+                // Solo intentamos desencriptar si el texto tiene cara de ser Base64 (largo y con caracteres de cifrado)
+                if (this.telefono.length() > 20) { 
+                    this.telefono = entidades.EncriptadorAES.desencriptar(this.telefono);
+                }
+            } catch (Exception e) {
+                // Si falla, es un dato legacy o ya está plano. No rompemos el hilo de AWT.
+                System.out.println("Aviso: El teléfono ya estaba en formato plano o hubo un error de padding.");
+            }
+        }
+    }
+    
+    
 }

@@ -17,6 +17,7 @@ import java.util.List;
  * @author munos
  */
 public class ReportesComandasBO implements IReporteComandasBO{
+    
     private ReporteComandaDAO reporteDAO = new ReporteComandaDAO();
 
     

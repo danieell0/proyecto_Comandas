@@ -8,6 +8,7 @@ import DAO.ClienteDAO;
 import Validadores.ValidadoresClientes;
 import adaptadores.ClienteAdapter;
 import dto.ClienteDTO;
+import entidades.Cliente;
 import entidades.ClienteFrecuente;
 import excepciones.NegocioExcepcion;
 import excepciones.PersistenciaException;
@@ -141,15 +142,45 @@ public class ClienteBO implements IClienteFrecuenteBO {
      * @return Lista de DTOs que coinciden con el filtro.
      * @throws NegocioExcepcion Si ocurre un error durante la búsqueda en la BD.
      */
-    public List<ClienteDTO> consultarPorFiltro(String filtro) throws NegocioExcepcion {
+    public List<ClienteDTO> consultarPorFiltro(String textoBusqueda) throws NegocioExcepcion {
         try {
-            String busqueda = (filtro == null) ? "" : filtro.trim();
-            List<ClienteFrecuente> entidades = clienteDAO.consultarPorFiltro(busqueda);
-            return ClienteAdapter.listaEntidadDTO(entidades);
-        } catch (PersistenciaException e) {
-            throw new NegocioExcepcion("Hubo un error en la busqueda.", e);
+            List<entidades.ClienteFrecuente> listaFrecuentes = clienteDAO.obtenerClientes();
+            List<ClienteDTO> resultados = new java.util.ArrayList<>();
+            
+            // 1. Limpiamos el texto que escribió el usuario (todo a minúsculas)
+            String filtro = (textoBusqueda == null) ? "" : textoBusqueda.toLowerCase().trim();
+
+            for (entidades.ClienteFrecuente c : listaFrecuentes) {
+                
+                // 2. Comparamos los campos (¡Revisa que tengas la línea del correo!)
+                boolean coincideNombre = c.getNombre().toLowerCase().contains(filtro);
+                boolean coincideTelefono = c.getTelefono() != null && c.getTelefono().contains(filtro);
+                
+                // ---> LA PIEZA FALTANTE: Validar el correo a minúsculas <---
+                boolean coincideCorreo = c.getCorreoElectronico() != null && c.getCorreoElectronico().toLowerCase().contains(filtro);
+
+                // 3. EL IF MÁGICO: Debe incluir coincideCorreo
+                if (coincideNombre || coincideTelefono || coincideCorreo) {
+                    
+                    resultados.add(new ClienteDTO(
+                        c.getId(),
+                        c.getNombre(),
+                        c.getApellidoPaterno(),
+                        c.getApellidoMaterno(),
+                        c.getTelefono(),
+                        c.getCorreoElectronico(),
+                        c.getFechaRegistro(),
+                        c.getPuntosFidelidad(),
+                        c.getNumeroVisitas()
+                    ));
+                }
+            }
+            return resultados;
+            
+        } catch (Exception ex) {
+            throw new NegocioExcepcion("Error al filtrar clientes: " + ex.getMessage());
         }
-    } 
+    }
 
 
     public void validarDatos(ClienteDTO cliente) throws NegocioExcepcion {

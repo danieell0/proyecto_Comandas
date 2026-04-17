@@ -9,13 +9,14 @@ import InterfacesDAO.IReportesClienteDAO;
 import dto.ReporteClienteDTO;
 import excepciones.NegocioExcepcion;
 import excepciones.PersistenciaException;
+import interfaces.IReportesBO;
 import java.util.List;
 
 /**
  * Objeto de negocio encargado de la logica y la validacion para los reportes 
  * @author Benjamin
  */
-public class ReportesBO {
+public class ReportesBO implements IReportesBO{
     private IReportesClienteDAO reportesDAO;
 
     public ReportesBO() {
@@ -30,6 +31,7 @@ public class ReportesBO {
      * @return Lista de DTOs con los datos calculados listos para la tabla.
      * @throws NegocioExcepcion Si hay errores de validación o de base de datos.
      */
+    @Override
     public List<ReporteClienteDTO> obtenerReporteClientes(String nombre, Integer minVisitas) throws NegocioExcepcion {
         try {
             // Regla de negocio básica: Las visitas no pueden ser negativas

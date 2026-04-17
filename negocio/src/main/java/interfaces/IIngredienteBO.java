@@ -23,4 +23,9 @@ public interface IIngredienteBO {
     public java.util.List<IngredienteDTO> buscarIngredientes(String nombre, String unidad) throws NegocioExcepcion;
     
     public void actualizarStock(Long id, Double nuevoStock) throws NegocioExcepcion;
+    
+    public List<IngredienteDTO> obtenerIngredientes() throws NegocioExcepcion;
+
+    public List<IngredienteDTO> buscarPorNombre(String nombre) throws NegocioExcepcion;
+    
 }

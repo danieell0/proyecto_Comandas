@@ -26,4 +26,8 @@ public interface IIngredienteDAO {
     
     public java.util.List<Ingrediente> buscarIngredientes(String nombre, String unidad) throws PersistenciaException;
     
+    public List<Ingrediente> obtenerIngredientes() throws PersistenciaException;
+    
+    public List<Ingrediente> buscarPorNombre(String nombre) throws PersistenciaException;
+    
 }

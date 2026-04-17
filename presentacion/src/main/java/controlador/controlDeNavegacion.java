@@ -9,12 +9,19 @@ import Componentes.barraBusqueda;
 import Componentes.formClienteFrecuente;
 import Componentes.panelSuperior;
 import Componentes.tablaClientes;
+import Enums.TipoAgregar;
+import dto.ProductoDTO;
 import javax.swing.JFrame;
+import pantallas.ActualizarProductoFrame;
+import pantallas.AgregarProductoFrame;
+import pantallas.AgrergarFrame;
 import pantallas.ClienteFrecuenteFrame;
 import pantallas.ComandasFrame;
 import pantallas.IngredientesFrame;
 import pantallas.MenuPrincipalFrame;
 import pantallas.MenuReportesFrame;
+import pantallas.MesasFrame;
+import pantallas.ProductosFrames;
 import pantallas.ReporteClientesFrame;
 import pantallas.ReportesComandasFrame;
 import pantallas.SeleccionRolFrame;
@@ -82,7 +89,6 @@ public class controlDeNavegacion {
     public void abrirComandas() {
         Sidebar sidebar = new Sidebar();
         panelSuperior pa = new panelSuperior("Comandas");
-
         cambiarPantalla(new ComandasFrame(sidebar, pa));
     }
     
@@ -100,4 +106,30 @@ public class controlDeNavegacion {
         cambiarPantalla(new SeleccionRolFrame(pa, sliede));
     }
 
+    public void abrirProductos() {
+        Sidebar sidebar = new Sidebar();
+        panelSuperior pa = new panelSuperior("Productos");
+        cambiarPantalla(new ProductosFrames(pa, sidebar));
+    }
+
+    public void abrirAgregarProductos() {
+        Sidebar sidebar = new Sidebar();
+        panelSuperior pa = new panelSuperior("Agregar Producto");
+        cambiarPantalla(new AgregarProductoFrame(pa, sidebar));
+    }
+
+    public void abrirAgregarGenerico(String titulo, TipoAgregar tipo) {
+        AgrergarFrame frame = new AgrergarFrame(titulo,tipo);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    public void abrirMesasFrame() {
+        panelSuperior pa = new panelSuperior("Mesas Frame");
+        cambiarPantalla(new MesasFrame());
+    }
+    public void abrirActualizarProducto(ProductoDTO productoDTO){
+        ActualizarProductoFrame apf=new ActualizarProductoFrame(productoDTO);
+        apf.setLocationRelativeTo(null);
+        apf.setVisible(true);
+    }
 }

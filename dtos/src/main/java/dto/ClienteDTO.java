@@ -51,6 +51,8 @@ public class ClienteDTO {
         this.puntosFidelidad = puntosFidelidad;
         this.numeroVisitas = numeroVisitas;
     }
+
+    
     
 
     public Long getId() {

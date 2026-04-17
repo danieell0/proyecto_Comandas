@@ -18,6 +18,12 @@ public class IngredienteDTO {
 
     public IngredienteDTO() {}
 
+    public IngredienteDTO(Long id, String nombre, String unidadMedida) {
+        this.id = id;
+        this.nombre = nombre;
+        this.unidadMedida = unidadMedida;
+    }
+    
     public IngredienteDTO(Long id, String nombre, String unidadMedida, Double cantidadActual, String rutaImagen) {
         this.id = id;
         this.nombre = nombre;
@@ -41,4 +47,7 @@ public class IngredienteDTO {
 
     public String getRutaImagen() { return rutaImagen; }
     public void setRutaImagen(String rutaImagen) { this.rutaImagen = rutaImagen; }
+
+    
+        
 }

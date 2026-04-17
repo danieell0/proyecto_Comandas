@@ -164,10 +164,11 @@ public class ClienteFrecuenteFrame extends JFrame {
                             c.getNombre(),
                             c.getApellidoPaterno(),
                             c.getApellidoMaterno(),
-                            c.getCorreoElectronico(),
                             c.getTelefono(),
+                            c.getCorreoElectronico(),
+                            c.getPuntosFidelidad(),
                             c.getNumeroVisitas(),
-                            c.getPuntosFidelidad()
+                            "Eliminar"
                         };
                         tabla.getModelo().addRow(fila);
                     }
@@ -269,7 +270,7 @@ public class ClienteFrecuenteFrame extends JFrame {
         } catch (NegocioExcepcion e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
-
+        
     }
 
 }

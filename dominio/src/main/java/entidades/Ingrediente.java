@@ -38,15 +38,18 @@ public class Ingrediente implements Serializable{
     /**
      * Nombre del ingrediente
      */
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false)
     private String nombre;
     
-    @Column(name = "unidad_medida")
+    @Column(name = "unidad_medida", nullable = false)
     private String unidadMedida;
     
     @Column(name = "cantidad_actual")
     private Double cantidadActual;
     
+    @Column(name = "imagen", nullable = true, length = 500)
+    private String rutaImagen;
+ 
     /**
      * Constructor por omision
      */
@@ -55,15 +58,34 @@ public class Ingrediente implements Serializable{
     }
 
     /**
+     * Consturctor util para el dao
+     */
+    public Ingrediente(String nombre, String unidadMedida, Double cantidadActual, String rutaImagen){
+        this.nombre = nombre;
+        this.unidadMedida = unidadMedida;
+        this.cantidadActual = cantidadActual;
+        this.rutaImagen = rutaImagen;
+    }
+    
+    /**
      * Constructor con todos los atributos
      */
-
     public Ingrediente(String nombre, String unidadMedida, Double cantidadActual) {
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
         this.cantidadActual = cantidadActual;
     }
+    
+    public String getRutaImagen() {
+        return rutaImagen;
+    }
 
+    public void setRutaImagen(String rutaImagen) {
+        this.rutaImagen = rutaImagen;
+    }
+
+    
+    
     public Long getId() {
         return id;
     }

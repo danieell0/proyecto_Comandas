@@ -5,139 +5,341 @@
 package pantallas;
 
 import Componentes.Sidebar;
+import Componentes.barraBusqueda;
 import Componentes.panelSuperior;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import Componentes.tablaClientes;
+import Enums.EstadoComandas;
+import Enums.EstadoMesa;
+import controlador.Coordinadoor;
+import dto.ComandaDTO;
+import dto.MesaDTO;
+import dto.ClienteDTO;
+import dto.DetalleProductoDTO;
+import dto.ProductoDTO;
+import interfaces.IMesaBO;
+import interfaces.IComandaBO;
+import objetosNegocio.MesaBO;
+import objetosNegocio.ComandaBO;
+import excepciones.NegocioExcepcion;
+import java.awt.*;
+import java.awt.event.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * 
- * @author munos
- */
 public class ComandasFrame extends JFrame {
 
-    private boolean menuVisible = false;
+    private Coordinadoor coordinador = Coordinadoor.getCoordinador();
+
+    private MesaDTO mesaSeleccionada;
+    private ClienteDTO clienteSeleccionado = null;
+    private List<DetalleProductoDTO> detalles = new ArrayList<>();
+
+    private JComboBox<String> comboCliente;
+    private JButton btnBuscarCliente;
+    private JTable tabla;
+    private DefaultTableModel modelo;
+
+    private JTextField txtFolio;
+    private JTextField txtFecha;
+    private JTextField txtEstado;
+    private JLabel lblTotal;
+    private JLabel lblMesa;
+
+    private boolean modoEdicion = false;
+    private ComandaDTO comandaActual = null;
 
     public ComandasFrame(Sidebar sidebar, panelSuperior pa) {
 
-        setTitle("Sistema de Comandas");
-        setSize(1200, 650);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle("Comanda");
+        setSize(1000, 600);
         setLayout(new BorderLayout());
-
-        sidebar.setPreferredSize(new Dimension(0, 0));
 
         add(pa, BorderLayout.NORTH);
         add(sidebar, BorderLayout.WEST);
 
         JPanel panelPrincipal = new JPanel(new BorderLayout(20, 20));
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        panelPrincipal.setBackground(new Color(220, 225, 230));
 
-        JPanel panelTop = new JPanel(new GridLayout(3, 4, 15, 10));
-        panelTop.setBackground(panelPrincipal.getBackground());
+        JPanel panelTop = new JPanel(new GridLayout(3, 4, 10, 10));
 
         panelTop.add(new JLabel("Folio:"));
-        panelTop.add(new JTextField("OB-20260321-001"));
+        txtFolio = new JTextField(generarFolio());
+        txtFolio.setEditable(false);
+        panelTop.add(txtFolio);
 
         panelTop.add(new JLabel("Fecha:"));
-        panelTop.add(new JTextField("21/03/2026 10:30"));
+        txtFecha = new JTextField(LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+        txtFecha.setEditable(false);
+        panelTop.add(txtFecha);
 
-        panelTop.add(new JLabel("Mesa disponible:"));
-        panelTop.add(new JComboBox<>(new String[]{"Mesa 1", "Mesa 2", "Mesa 3"}));
+        panelTop.add(new JLabel("Mesa:"));
+        lblMesa = new JLabel();
+        panelTop.add(lblMesa);
 
-        panelTop.add(new JLabel("Cliente frecuente:"));
-        panelTop.add(new JTextField("Cliente General"));
+        panelTop.add(new JLabel("Cliente:"));
+
+        comboCliente = new JComboBox<>(new String[]{
+            "Cliente General",
+            "Cliente Frecuente"
+        });
+        panelTop.add(comboCliente);
 
         panelTop.add(new JLabel("Estado:"));
-        JTextField estado = new JTextField("Abierta");
-        estado.setForeground(new Color(0, 150, 0));
-        panelTop.add(estado);
+        txtEstado = new JTextField("Abierta");
+        txtEstado.setEditable(false);
+        txtEstado.setForeground(Color.GREEN);
+        panelTop.add(txtEstado);
 
         panelPrincipal.add(panelTop, BorderLayout.NORTH);
 
-        String[] columnas = {"Cantidad", "Producto", "Comentarios"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        modelo = new DefaultTableModel(
+                new String[]{"Cantidad", "Producto", "Comentarios"}, 0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 0;
+            }
+        };
 
-        JTable tabla = new JTable(modelo);
-        tabla.setRowHeight(25);
+        tabla = new JTable(modelo);
 
-        JScrollPane scroll = new JScrollPane(tabla);
-        scroll.setBorder(BorderFactory.createTitledBorder("Detalles comanda"));
+        tabla.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JTextField()) {
+            @Override
+            public boolean stopCellEditing() {
+                String valor = (String) getCellEditorValue();
+                try {
+                    int num = Integer.parseInt(valor);
+                    if (num <= 0) {
+                        JOptionPane.showMessageDialog(null, "Cantidad > 0");
+                        return false;
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Solo números");
+                    return false;
+                }
+                return super.stopCellEditing();
+            }
+        });
 
-        panelPrincipal.add(scroll, BorderLayout.CENTER);
+        modelo.addTableModelListener(e -> {
+            if (e.getColumn() == 0) {
+                int fila = e.getFirstRow();
+                try {
+                    int nuevaCantidad = Integer.parseInt(
+                            modelo.getValueAt(fila, 0).toString()
+                    );
 
-        JPanel panelAgregar = new JPanel();
-        panelAgregar.setBackground(panelPrincipal.getBackground());
+                    DetalleProductoDTO d = detalles.get(fila);
+                    d.setCantidad(nuevaCantidad);
+                    d.setSubtotal(d.getPrecio() * nuevaCantidad);
+
+                    recalcularTotal();
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Cantidad inválida");
+                }
+            }
+        });
+
+        panelPrincipal.add(new JScrollPane(tabla), BorderLayout.CENTER);
 
         JButton btnAgregar = new JButton("Agregar producto");
-        btnAgregar.setBackground(new Color(20, 120, 120));
-        btnAgregar.setForeground(Color.WHITE);
+        JButton btnGuardar = new JButton("Guardar");
+        JButton btnCancelar = new JButton("Cancelar");
+        JButton btnEntregar = new JButton("Entregar");
+        JButton btnEliminar = new JButton("Eliminar producto");
 
-        panelAgregar.add(btnAgregar);
+        JPanel acciones = new JPanel();
+        acciones.add(btnAgregar);
+        acciones.add(btnEliminar);
+        acciones.add(btnGuardar);
+        acciones.add(btnCancelar);
+        acciones.add(btnEntregar);
 
-        panelPrincipal.add(panelAgregar, BorderLayout.AFTER_LAST_LINE);
-
+        lblTotal = new JLabel("Total: $0");
         JPanel panelBottom = new JPanel(new BorderLayout());
-        panelBottom.setBackground(panelPrincipal.getBackground());
-
-        JPanel panelTotales = new JPanel(new GridLayout(2, 2));
-        panelTotales.setBackground(panelPrincipal.getBackground());
-
-        panelTotales.add(new JLabel(""));
-        panelTotales.add(new JLabel("Subtotal: $0"));
-
-        panelTotales.add(new JLabel(""));
-        panelTotales.add(new JLabel("Total: $0"));
-
-        JPanel panelAcciones = new JPanel();
-        panelAcciones.setBackground(panelPrincipal.getBackground());
-
-        JButton btnGuardar = new JButton("Guardar comanda");
-        btnGuardar.setBackground(new Color(20, 120, 120));
-        btnGuardar.setForeground(Color.WHITE);
-
-        JButton btnCancelar = new JButton("Cancelar comanda");
-        btnCancelar.setBackground(new Color(220, 50, 50));
-        btnCancelar.setForeground(Color.WHITE);
-
-        JButton btnEntregar = new JButton("Marcar como entregada");
-        btnEntregar.setBackground(new Color(50, 180, 50));
-        btnEntregar.setForeground(Color.WHITE);
-
-        panelAcciones.add(btnGuardar);
-        panelAcciones.add(btnCancelar);
-        panelAcciones.add(btnEntregar);
-
-        panelBottom.add(panelTotales, BorderLayout.NORTH);
-        panelBottom.add(panelAcciones, BorderLayout.SOUTH);
+        panelBottom.add(lblTotal, BorderLayout.NORTH);
+        panelBottom.add(acciones, BorderLayout.SOUTH);
 
         panelPrincipal.add(panelBottom, BorderLayout.SOUTH);
 
-        add(panelPrincipal, BorderLayout.CENTER);
+        btnBuscarCliente = new JButton("Buscar cliente");
+        btnBuscarCliente.setVisible(false);
+        panelPrincipal.add(btnBuscarCliente, BorderLayout.WEST);
 
-        pa.getBtnMenu().addActionListener(e -> {
-            if (menuVisible) {
-                sidebar.setPreferredSize(new Dimension(0, 0));
+        add(panelPrincipal);
+
+        comboCliente.addActionListener(e
+                -> btnBuscarCliente.setVisible(
+                        comboCliente.getSelectedItem().equals("Cliente Frecuente"))
+        );
+
+        btnBuscarCliente.addActionListener(e -> {
+            ClientesComandasFrame frame
+                    = new ClientesComandasFrame(new tablaClientes(), new barraBusqueda());
+
+            frame.setClienteSeleccionListener(cliente -> {
+                clienteSeleccionado = cliente;
+                JOptionPane.showMessageDialog(this,
+                        "Cliente: " + cliente.getNombre());
+            });
+
+            frame.setVisible(true);
+        });
+
+        btnAgregar.addActionListener(e -> agregarProducto());
+        btnGuardar.addActionListener(e -> guardarComanda());
+        btnEliminar.addActionListener(e -> eliminarProducto());
+        btnCancelar.addActionListener(e -> cerrar(EstadoComandas.CANCELADA));
+        btnEntregar.addActionListener(e -> cerrar(EstadoComandas.ENTREGADA));
+    }
+
+    public void setMesaSeleccionada(MesaDTO mesa) {
+        this.mesaSeleccionada = mesa;
+        try {
+            ComandaDTO existente
+                    = coordinador.obtenerComandaPorMesa(mesa.getId());
+            if (existente != null) {
+                modoEdicion = true;
+                comandaActual = existente;
+                cargarComanda(existente); 
             } else {
-                sidebar.setPreferredSize(new Dimension(200, 0));
+                modoEdicion = false;
             }
-            menuVisible = !menuVisible;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar comanda");
+        }
+    }
 
-            sidebar.revalidate();
-            sidebar.repaint();
+    private void agregarProducto() {
+        ProductosComandaFrame frame = new ProductosComandaFrame();
+
+        frame.setProductoSeleccionListener(producto -> {
+
+            for (DetalleProductoDTO det : detalles) {
+                if (det.getIdProducto().equals(producto.getId())) {
+
+                    det.setCantidad(det.getCantidad() + 1);
+                    det.setSubtotal(det.getCantidad() * det.getPrecio());
+
+                    int i = detalles.indexOf(det);
+                    modelo.setValueAt(det.getCantidad(), i, 0);
+
+                    recalcularTotal();
+                    return;
+                }
+            }
+
+            DetalleProductoDTO d = new DetalleProductoDTO();
+            d.setIdProducto(producto.getId());
+            d.setNombreProducto(producto.getNombre());
+            d.setPrecio(producto.getPrecio());
+            d.setCantidad(1);
+            d.setSubtotal(d.getPrecio());
+
+            String comentario = JOptionPane.showInputDialog("Comentario:");
+            d.setComentario(comentario != null ? comentario : "");
+
+            detalles.add(d);
+
+            modelo.addRow(new Object[]{
+                d.getCantidad(),
+                d.getNombreProducto(),
+                d.getComentario()
+            });
+
+            recalcularTotal();
+        });
+
+        frame.setVisible(true);
+    }
+
+    private void guardarComanda() {
+        if (mesaSeleccionada == null) {
+            JOptionPane.showMessageDialog(this, "Mesa no asignada");
+            return;
+        }
+        if (detalles.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Agrega productos");
+            return;
+        }
+        ComandaDTO dto = new ComandaDTO();
+        dto.setIdMesa(mesaSeleccionada.getId());
+        dto.setIdMesero(1L);
+
+        if (clienteSeleccionado != null) {
+            dto.setIdCliente(clienteSeleccionado.getId());
+        }
+        dto.setDetalles(detalles);
+        try {
+            coordinador.crearComanda(dto);
+            JOptionPane.showMessageDialog(this, "Comanda guardada");
+        } catch (NegocioExcepcion e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void recalcularTotal() {
+        double total = 0;
+        for (DetalleProductoDTO d : detalles) {
+            total += d.getSubtotal();
+        }
+        lblTotal.setText("Total: $" + total);
+    }
+    
+    private void cerrar(EstadoComandas estado) {
+        if (!modoEdicion) {
+            JOptionPane.showMessageDialog(this, "No hay comanda activa");
+            return;
+        }
+        coordinador.cerrarComanda(comandaActual.getId(), estado);
+        JOptionPane.showMessageDialog(this, "Comanda cerrada");
+        dispose();
+    }
+
+    private String generarFolio() {
+        String fecha = java.time.LocalDate.now()
+                .format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd"));
+        int consecutivo = (int) (Math.random() * 1000);
+        return String.format("OB-%s-%03d", fecha, consecutivo);
+    }
+
+    private void eliminarProducto() {
+        int fila = tabla.getSelectedRow();
+
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Selecciona un producto");
+            return;
+        }
+
+        detalles.remove(fila);
+        modelo.removeRow(fila);
+
+        recalcularTotal();
+    }
+    private void cargarComanda(ComandaDTO c) {
+
+    detalles.clear();
+    modelo.setRowCount(0);
+
+    for (DetalleProductoDTO d : c.getDetalles()) {
+
+        detalles.add(d);
+
+        modelo.addRow(new Object[]{
+            d.getCantidad(),
+            d.getNombreProducto(),
+            d.getComentario()
         });
     }
+
+    recalcularTotal();
 }
+}
+
