@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pantallas;
 
 import Componentes.Sidebar;
@@ -18,14 +14,31 @@ import javax.swing.JPanel;
 import controlador.controlDeNavegacion;
 
 /**
- *
- *
+ * Ventana principal del sistema de comandas.
+ * 
+ * <p>Esta clase representa el menú principal de la aplicación, desde donde
+ * se puede acceder a los distintos módulos del sistema como comandas,
+ * productos, ingredientes, clientes frecuentes y reportes.</p>
+ * 
+ * <p>Incluye un panel lateral (sidebar) que puede mostrarse u ocultarse,
+ * así como un panel central con botones de acceso rápido a cada módulo.</p>
+ * 
+ * <p>La navegación entre pantallas se gestiona mediante la clase
+ * {@link controlDeNavegacion}.</p>
+ * 
  * @author munos
  */
 public class MenuPrincipalFrame extends JFrame {
 
+    /** Indica si el menú lateral está visible */
     private boolean menuVisible = false;
 
+    /**
+     * Constructor que inicializa la ventana principal del sistema.
+     *
+     * @param sidebar componente lateral de navegación
+     * @param pa panel superior de la aplicación
+     */
     public MenuPrincipalFrame(Sidebar sidebar, panelSuperior pa) {
         setTitle("Sistema de Comandas");
         setSize(1200, 650);
@@ -61,6 +74,7 @@ public class MenuPrincipalFrame extends JFrame {
         panelInferior.setPreferredSize(new Dimension(0, 30));
         add(panelInferior, BorderLayout.SOUTH);
 
+        // Evento para mostrar u ocultar el sidebar
         pa.getBtnMenu().addActionListener(e -> {
             if (menuVisible) {
                 sidebar.setPreferredSize(new Dimension(0, 0));
@@ -73,6 +87,7 @@ public class MenuPrincipalFrame extends JFrame {
             sidebar.repaint();
         });
 
+        // Eventos de navegación
         btnComandas.addActionListener(e -> abrir("Comandas"));
         btnProductos.addActionListener(e -> abrir("Productos"));
         btnIngredientes.addActionListener(e -> abrir("Ingredientes"));
@@ -80,6 +95,13 @@ public class MenuPrincipalFrame extends JFrame {
         btnReportes.addActionListener(e -> abrir("Reportes"));
     }
 
+    /**
+     * Crea un botón estilizado para el menú principal.
+     *
+     * @param texto texto que se mostrará en el botón
+     * @param color color de fondo del botón
+     * @return botón configurado
+     */
     private JButton crearBoton(String texto, Color color) {
         JButton btn = new JButton(texto);
 
@@ -89,6 +111,7 @@ public class MenuPrincipalFrame extends JFrame {
         btn.setBackground(color);
         btn.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
+        // Efecto visual al pasar el mouse
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btn.setBackground(color.darker());
@@ -102,6 +125,14 @@ public class MenuPrincipalFrame extends JFrame {
         return btn;
     }
 
+    /**
+     * Abre el módulo correspondiente según el nombre recibido.
+     * 
+     * <p>Utiliza el controlador de navegación para dirigir al usuario
+     * a la ventana adecuada.</p>
+     *
+     * @param modulo nombre del módulo a abrir
+     */
     private void abrir(String modulo) {
 
         controlDeNavegacion nav = controlDeNavegacion.getcontrolNavegacion();
@@ -113,7 +144,7 @@ public class MenuPrincipalFrame extends JFrame {
                 break;
 
             case "Comandas":
-                nav.abrirComandas();
+                nav.abrirMesasFrame();
                 break;
 
             case "Productos":

@@ -6,7 +6,9 @@ package controlador;
 
 import DAO.IngredienteDAO;
 import DAO.ProductoDAO;
+import Enums.EstadoComandas;
 import dto.ClienteDTO;
+import dto.ComandaDTO;
 import dto.IngredienteDTO;
 import dto.IngredienteSeleccionadoDTO;
 import dto.ProductoDTO;
@@ -14,6 +16,7 @@ import dto.ReporteClienteDTO;
 import dto.ReporteComandaDTO;
 import entidades.Producto;
 import excepciones.NegocioExcepcion;
+import interfaces.IComandaBO;
 import interfaces.IIngredienteBO;
 import interfaces.IProductoBO;
 import java.time.LocalDate;
@@ -21,6 +24,7 @@ import java.util.List;
 import javax.persistence.PersistenceException;
 import javax.swing.JOptionPane;
 import objetosNegocio.ClienteBO;
+import objetosNegocio.ComandaBO;
 import objetosNegocio.IngredienteBO;
 import objetosNegocio.ProductoBO;
 import objetosNegocio.ReportesBO;
@@ -63,6 +67,8 @@ public class Coordinadoor {
 
     private IProductoBO productoBO;
 
+    private IComandaBO comandaBO;
+
     private IIngredienteBO ingredienteBO;
 
     private List<IngredienteSeleccionadoDTO> ingredientesSeleccionados;
@@ -83,6 +89,7 @@ public class Coordinadoor {
         reportesComandas = new ReportesComandasBO();
         productoBO = new ProductoBO(new ProductoDAO());
         ingredienteBO = new IngredienteBO(new IngredienteDAO());
+        comandaBO = new ComandaBO();
     }
 
     /**
@@ -236,7 +243,7 @@ public class Coordinadoor {
             return null;
         }
     }
-    
+
     public void setIngredientesSeleccionados(List<IngredienteSeleccionadoDTO> lista) {
         this.ingredientesSeleccionados = lista;
     }
@@ -244,13 +251,39 @@ public class Coordinadoor {
     public List<IngredienteSeleccionadoDTO> getIngredientesSeleccionados() {
         return ingredientesSeleccionados;
     }
-    
-    public void guardarProducto(ProductoDTO producto) throws NegocioExcepcion{
+
+    public void guardarProducto(ProductoDTO producto) throws NegocioExcepcion {
         try {
             productoBO.guardarProducto(producto);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
-    
+
+    public void crearComanda(ComandaDTO dto) throws NegocioExcepcion{
+        try {
+            comandaBO.crearComanda(dto);
+            JOptionPane.showMessageDialog(null, "Comanda creada correctamente");
+        } catch (NegocioExcepcion e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    public ComandaDTO obtenerComandaPorMesa(Long idMesa) {
+        try {
+            return comandaBO.obtenerPorMesa(idMesa);
+        } catch (NegocioExcepcion e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return null;
+        }
+    }
+
+    public void cerrarComanda(Long idComanda, EstadoComandas estado) {
+        try {
+            comandaBO.cerrarComanda(idComanda, estado);
+            JOptionPane.showMessageDialog(null, "Comanda cerrada correctamente");
+        } catch (NegocioExcepcion e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
 }

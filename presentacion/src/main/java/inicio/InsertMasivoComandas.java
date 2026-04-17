@@ -145,7 +145,7 @@ public class InsertMasivoComandas {
                         "OB-20260410-" + folioCount++,
                         LocalDateTime.now(),
                         0.0,
-                        EstadoComandas.DISPONIBLE,
+                        EstadoComandas.ABIERTA,
                         meseros.get(random.nextInt(meseros.size())),
                         clientes.get(random.nextInt(clientes.size())),
                         mesa

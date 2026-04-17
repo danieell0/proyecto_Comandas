@@ -17,6 +17,7 @@ import pantallas.ClienteFrecuenteFrame;
 import pantallas.ComandasFrame;
 import pantallas.MenuPrincipalFrame;
 import pantallas.MenuReportesFrame;
+import pantallas.MesasFrame;
 import pantallas.ProductosFrames;
 import pantallas.ReporteClientesFrame;
 import pantallas.ReportesComandasFrame;
@@ -103,6 +104,10 @@ public class controlDeNavegacion {
         AgrergarFrame frame = new AgrergarFrame(titulo,tipo);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+    public void abrirMesasFrame() {
+        panelSuperior pa = new panelSuperior("Mesas Frame");
+        cambiarPantalla(new MesasFrame());
     }
 
 }
