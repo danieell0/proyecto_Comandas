@@ -10,7 +10,9 @@ import Componentes.formClienteFrecuente;
 import Componentes.panelSuperior;
 import Componentes.tablaClientes;
 import Enums.TipoAgregar;
+import dto.ProductoDTO;
 import javax.swing.JFrame;
+import pantallas.ActualizarProductoFrame;
 import pantallas.AgregarProductoFrame;
 import pantallas.AgrergarFrame;
 import pantallas.ClienteFrecuenteFrame;
@@ -109,5 +111,9 @@ public class controlDeNavegacion {
         panelSuperior pa = new panelSuperior("Mesas Frame");
         cambiarPantalla(new MesasFrame());
     }
-
+    public void abrirActualizarProducto(ProductoDTO productoDTO){
+        ActualizarProductoFrame apf=new ActualizarProductoFrame(productoDTO);
+        apf.setLocationRelativeTo(null);
+        apf.setVisible(true);
+    }
 }

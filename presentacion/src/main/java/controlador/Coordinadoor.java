@@ -253,9 +253,22 @@ public class Coordinadoor {
     }
 
     public void guardarProducto(ProductoDTO producto) throws NegocioExcepcion {
+        productoBO.guardarProducto(producto);
+    }
+
+    public ProductoDTO obtenerProductoPorId(Long id) throws NegocioExcepcion {
         try {
-            productoBO.guardarProducto(producto);
+            return productoBO.obtenerProductoPorId(id);
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return null;
+        }
+    }
+
+    public void actualizarProducto(ProductoDTO productoDTO) throws NegocioExcepcion {
+        try {
+            productoBO.actualizarProducto(productoDTO);
+        } catch (NegocioExcepcion e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
@@ -286,4 +299,5 @@ public class Coordinadoor {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
+
 }

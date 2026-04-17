@@ -224,11 +224,14 @@ public class ProductosFrames extends JFrame {
             int fila = tabla.getSelectedRow();
             //si es -1 es que no seleccionaste nd y si no deberia de mostrar la fila seleccionada
             if (fila != -1) {
-                String nombre = modelo.getValueAt(fila, 1).toString();
-                String precio = modelo.getValueAt(fila, 2).toString();
-
-                JOptionPane.showMessageDialog(this,
-                        "Editar producto:\nNombre: " + nombre + "\nPrecio: " + precio);
+                try {
+                    Long id = (Long) modelo.getValueAt(fila, 0);
+                    ProductoDTO productoAc= Coordinadoor.getCoordinador().obtenerProductoPorId(id);
+                    controlDeNavegacion.getcontrolNavegacion().abrirActualizarProducto(productoAc);
+                    dispose();
+                } catch (NegocioExcepcion ex) {
+                   JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
 
             } else {
                 JOptionPane.showMessageDialog(this, "Selecciona una fila");
@@ -255,9 +258,11 @@ public class ProductosFrames extends JFrame {
                 JOptionPane.showMessageDialog(this, "Selecciona una fila.");
             }
         });
-        
-        btnAgregar.addActionListener(e->{
+
+        btnAgregar.addActionListener(e -> {
             controlDeNavegacion.getcontrolNavegacion().abrirAgregarProductos();
+            dispose();
+            cargarProductos();
         });
 
         //creamos el panel inferior 
