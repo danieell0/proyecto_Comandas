@@ -22,6 +22,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -92,6 +93,21 @@ public class ClienteFrecuenteFrame extends JFrame {
         panelInferior.setBackground(new Color(20, 87, 87));
         panelInferior.setPreferredSize(new Dimension(0, 30));
         add(panelInferior, BorderLayout.SOUTH);
+        
+        
+        
+        JButton btnRefrescar = new JButton("Actualizar Datos");
+        btnRefrescar.setBackground(new Color(20, 87, 87));
+        btnRefrescar.setForeground(Color.WHITE);
+
+        // Cuando el usuario le dé clic, la tabla vuelve a consultar la BD
+        btnRefrescar.addActionListener(e -> {
+            cargarTabla(); // Tu método que limpia el modelo y lo vuelve a llenar
+        });
+
+        // Agrégalo a tu panel de botones o panel superior
+        panelInferior.add(btnRefrescar);
+
 
         //agrego el action listener del boton del menu 
         pa.getBtnMenu().addActionListener(e -> {

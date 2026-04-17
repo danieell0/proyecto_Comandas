@@ -20,6 +20,8 @@ import java.util.List;
  */
 public interface IClienteDAO {
     
+    public void actualizar(Cliente cliente) throws PersistenciaException;
+    
     /**
      * Guarda un nuevo cliente en la base de datos.
      * 

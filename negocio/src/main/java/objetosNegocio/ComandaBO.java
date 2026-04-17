@@ -193,11 +193,11 @@ public class ComandaBO implements IComandaBO {
 
     /**
      * Cierra una comanda cambiando su estado y liberando la mesa.
-     * 
-     * @param idComanda identificador de la comanda
+     * Además, si la comanda es Entregada y el cliente es Frecuente, 
+     * suma puntos de fidelidad y visitas.
+     * * @param idComanda identificador de la comanda
      * @param estado nuevo estado (ENTREGADA o CANCELADA)
-     * 
-     * @throws NegocioExcepcion si ocurre un error o el estado no es válido
+     * * @throws NegocioExcepcion si ocurre un error o el estado no es válido
      */
     @Override
     public void cerrarComanda(Long idComanda, EstadoComandas estado) throws NegocioExcepcion {
@@ -216,17 +216,42 @@ public class ComandaBO implements IComandaBO {
                 throw new NegocioExcepcion("La comanda ya fue cerrada");
             }
 
+            // 1. Cambiamos el estado de la comanda
             comanda.setEstado(estado);
 
-            // Liberar mesa
+            // --- INICIO DE REGLA DE NEGOCIO: FIDELIDAD ---
+            if (estado == EstadoComandas.ENTREGADA) {
+                Cliente cliente = comanda.getCliente();
+                
+                // Verificamos si es un cliente frecuente usando polimorfismo
+                if (cliente instanceof entidades.ClienteFrecuente) {
+                    entidades.ClienteFrecuente frecuente = (entidades.ClienteFrecuente) cliente;
+                    
+                    // Sumar una visita
+                    int visitasActuales = (frecuente.getNumeroVisitas() == null) ? 0 : frecuente.getNumeroVisitas();
+                    frecuente.setNumeroVisitas(visitasActuales + 1);
+                    
+                    // Sumar puntos (Ejemplo: 5% del total de la comanda)
+                    double puntosActuales = (frecuente.getPuntosFidelidad() == null) ? 0.0 : frecuente.getPuntosFidelidad();
+                    double puntosGanados = comanda.getTotalVenta() * 0.05; // Ajusta el 0.05 según tus reglas
+                    frecuente.setPuntosFidelidad(puntosActuales + puntosGanados);
+                    
+                    // Actualizamos al cliente en la base de datos
+                    clienteDAO.actualizar(frecuente);
+                }
+            }
+            // --- FIN DE REGLA DE NEGOCIO ---
+
+            // 2. Liberar mesa
             Mesa mesa = comanda.getMesa();
             mesa.setEstado(EstadoMesa.Disponible);
 
+            // 3. Guardamos los cambios
             comandaDAO.actualizar(comanda);
             mesaDAO.actualizar(mesa);
 
-        } catch (PersistenciaException e) {
-            throw new NegocioExcepcion("Error al cerrar la comanda");
+        } catch (Exception e) { // Cambié a Exception general por si clienteDAO lanza otro tipo de error
+            throw new NegocioExcepcion("Error al cerrar la comanda: " + e.getMessage());
         }
     }
 }

@@ -28,6 +28,21 @@ import javax.persistence.TypedQuery;
  */
 public class ClienteDAO implements IClienteDAO {
 
+    // En tu ClienteDAO:
+    public void actualizar(Cliente cliente) throws PersistenciaException {
+        EntityManager em = ConexionBD.crearConexion();
+        try {
+            em.getTransaction().begin();
+            em.merge(cliente); // Actualiza los datos en MySQL
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new PersistenciaException("Error al actualizar cliente");
+        } finally {
+            em.close();
+        }
+    }
+    
     /**
      * Actualiza la información de un cliente frecuente existente en la base de
      * datos. Utiliza el método 'merge' de JPA para sincronizar el objeto
@@ -132,8 +147,14 @@ public class ClienteDAO implements IClienteDAO {
     public List<ClienteFrecuente> obtenerClientes() throws PersistenciaException {
         EntityManager em = ConexionBD.crearConexion();
         try {
+            em.clear(); // Limpiamos caché local por si acaso
             String comandoJPQL = "SELECT p FROM ClienteFrecuente p";
             TypedQuery<ClienteFrecuente> query = em.createQuery(comandoJPQL, ClienteFrecuente.class);
+            
+            // --- AQUÍ ESTÁ LA SOLUCIÓN DEL CACHÉ ---
+            // Le decimos a JPA: "Ignora lo que tienes guardado y ve por los datos frescos"
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            
             return query.getResultList();
         } catch (Exception e) {
             throw new PersistenciaException("Error al obtener la lista de clientes frecuentes");
