@@ -12,10 +12,12 @@ import Componentes.tablaClientes;
 import javax.swing.JFrame;
 import pantallas.ClienteFrecuenteFrame;
 import pantallas.ComandasFrame;
+import pantallas.IngredientesFrame;
 import pantallas.MenuPrincipalFrame;
 import pantallas.MenuReportesFrame;
 import pantallas.ReporteClientesFrame;
 import pantallas.ReportesComandasFrame;
+import pantallas.SeleccionRolFrame;
 
 /**
  *
@@ -84,6 +86,18 @@ public class controlDeNavegacion {
         cambiarPantalla(new ComandasFrame(sidebar, pa));
     }
     
+    public void abrirIngredientes(){
+        Sidebar sliede = new Sidebar();
+        panelSuperior pa = new panelSuperior("Ingredientes");
+        
+        cambiarPantalla(new IngredientesFrame(pa, sliede));
+    }
     
+    public void abrirSeleccionRol(){
+        Sidebar sliede = new Sidebar();
+        panelSuperior pa = new panelSuperior("Inicio de Sesion");
+        
+        cambiarPantalla(new SeleccionRolFrame(pa, sliede));
+    }
 
 }

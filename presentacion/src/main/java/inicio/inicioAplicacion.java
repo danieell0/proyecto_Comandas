@@ -17,6 +17,6 @@ public class inicioAplicacion {
     public static void main(String[] args) {
         //controlDeNavegacion.getcontrolNavegacion().abrirReportesClientes();
         
-        controlDeNavegacion.getcontrolNavegacion().abrirMenuPrincipal();
+        controlDeNavegacion.getcontrolNavegacion().abrirSeleccionRol();
     }
 }

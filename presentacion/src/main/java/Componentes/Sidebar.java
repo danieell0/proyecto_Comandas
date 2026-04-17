@@ -85,7 +85,7 @@ public class Sidebar extends JPanel {
                 nav.abrirFrameBase();
                 break;
             case "Ingredientes":
-                nav.abrirFrameBase();
+                nav.abrirIngredientes();
                 break;
             case "Clientes Frecuentes":
                 nav.abrirFrameBase();

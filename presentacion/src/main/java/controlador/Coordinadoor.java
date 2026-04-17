@@ -5,6 +5,7 @@
 package controlador;
 
 import dto.ClienteDTO;
+import dto.EmpleadoMeseroDTO;
 import dto.ReporteClienteDTO;
 import dto.ReporteComandaDTO;
 import entidades.ClienteFrecuente;
@@ -30,6 +31,32 @@ import pantallas.ReportesComandasFrame;
  */
 public class Coordinadoor {
 
+    //se instancia el bo de empleados
+    private objetosNegocio.EmpleadoBO empleadoBO = new objetosNegocio.EmpleadoBO();
+    
+    // variable para recordar quien inicio sesion
+    private dto.EmpleadoMeseroDTO meseroLogueadoActual;
+    
+    // getters y setters de la sesion
+    public void setMeseroLogueado(dto.EmpleadoMeseroDTO mesero){
+        this.meseroLogueadoActual = mesero;
+    }
+    
+    public dto.EmpleadoMeseroDTO getMeseroLogueado(){
+        return this.meseroLogueadoActual;
+    }
+    
+    //el metodo que llamara la pantalla
+    public dto.EmpleadoMeseroDTO iniciarSesionMesero(Long codigo) throws excepciones.NegocioExcepcion{
+        //le pedimos al bo que valide el codigo
+        dto.EmpleadoMeseroDTO mesero = empleadoBO.iniciarSesionMesero(codigo);
+        
+        //si no lanzo error, significa que el codigo es correcto. lo guardamos en sesion:
+        setMeseroLogueado(mesero);
+        
+        return mesero;
+    }
+    
     /**
      * Instancia estática y única de la clase (Patrón Singleton).
      */
