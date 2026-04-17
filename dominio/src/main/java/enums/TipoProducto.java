@@ -9,5 +9,5 @@ package Enums;
  * @author Jorge
  */
 public enum TipoProducto {
-     PLATILLO,BEBIDA,POSTRE;
+     COMIDA,PLATILLO,BEBIDA,POSTRE;
 }

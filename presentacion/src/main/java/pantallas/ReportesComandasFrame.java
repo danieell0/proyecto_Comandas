@@ -44,6 +44,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ReportesComandasFrame extends JFrame {
 
+    private boolean menuVisible = false;
+    
     private JTextField txtInicio;
     private JTextField txtFin;
     private JTable tabla;
@@ -146,6 +148,25 @@ public class ReportesComandasFrame extends JFrame {
             generarPdf();
         });
 
+        // 1. Action Listener para el botón "Regresar al menu"
+        btnRegresar.addActionListener( e -> {
+            controlador.controlDeNavegacion.getcontrolNavegacion().abrirMenuPrincipal();
+            this.dispose(); 
+        });
+
+        // 2. Action Listener para el botón del menú de hamburguesa
+        pa.getBtnMenu().addActionListener(e -> {
+            if (menuVisible) {
+                sliede.setPreferredSize(new Dimension(0, 0));
+            } else {
+                sliede.setPreferredSize(new Dimension(200, 0)); 
+            }
+            menuVisible = !menuVisible;
+            sliede.revalidate();
+            sliede.repaint();
+        });
+        
+        
     }
 
     private void filtrar() {
@@ -251,5 +272,6 @@ public class ReportesComandasFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Error al generar elo PDF: " + e.getMessage());
         }
     }
-
+    
+        
 }
